@@ -1,15 +1,17 @@
 package main
 
 import (
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/user/biz/dal"
 	"net"
 	"time"
 
+	_ "github.com/Blue-Berrys/Tiktok_e_commerce/app/user/biz/dal/mysql"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/user/conf"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/user/userservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	"github.com/Blue-Berrys/Tiktok_e_commerce/app/user/conf"
-	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/user/userservice"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -18,6 +20,9 @@ func main() {
 	opts := kitexInit()
 
 	svr := userservice.NewServer(new(UserServiceImpl), opts...)
+
+	//init mysql & redis
+	dal.Init()
 
 	err := svr.Run()
 	if err != nil {

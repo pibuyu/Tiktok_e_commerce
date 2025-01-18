@@ -9,15 +9,15 @@ kitex:
 
 registry:
   registry_address:
-    - 127.0.0.1:2379
+    - 8.138.149.242:2379
   username: ""
   password: ""
 
 mysql:
-  dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "easy-video-net:hhf001113@tcp(8.138.149.242:3306)/easy-video-net?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
-  address: "127.0.0.1:6379"
+  address: "8.138.149.242:6379"
   username: ""
-  password: ""
+  password: "hhf001113"
   db: 0
