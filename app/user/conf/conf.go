@@ -2,6 +2,7 @@ package conf
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"sync"
@@ -62,6 +63,9 @@ func initConf() {
 	prefix := "conf"
 	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
 	content, err := ioutil.ReadFile(confFileRelPath)
+
+	log.Printf("config path :%v", content)
+
 	if err != nil {
 		panic(err)
 	}
