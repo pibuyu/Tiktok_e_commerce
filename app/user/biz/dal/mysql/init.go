@@ -35,7 +35,7 @@ func ReturnsInstance() *gorm.DB {
 	myLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{
-			LogLevel:                  logger.Silent, //仅仅在控制台输出指定Debug的语句
+			LogLevel:                  logger.Silent, // 仅仅在控制台输出指定Debug的语句
 			IgnoreRecordNotFoundError: true,          // 忽略ErrRecordNotFound（记录未找到）错误
 			Colorful:                  true,          // 禁用彩色打印
 		},

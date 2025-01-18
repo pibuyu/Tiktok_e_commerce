@@ -1,6 +1,7 @@
 kitex:
   service: "user"
   address: ":8888"
+  metrics_port: ":9991"
   log_level: info
   log_file_name: "log/kitex.log"
   log_max_size: 10
@@ -9,7 +10,7 @@ kitex:
 
 registry:
   registry_address:
-    - 8.138.149.242:2379
+    - 101.126.144.39:8500
   username: ""
   password: ""
 

@@ -7,7 +7,7 @@ import (
 )
 
 func EncodePassword(email, password string) string {
-	salt := fmt.Sprintf("%s%s", consts.SECRET, email)
+	salt := fmt.Sprintf("%s%s", consts.SECRET_SALT, email)
 	saltPwd := []byte(fmt.Sprintf("%s%s", salt, password))
 	passwordMd5 := fmt.Sprintf("%x", md5.Sum(saltPwd))
 

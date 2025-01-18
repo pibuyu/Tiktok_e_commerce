@@ -38,7 +38,7 @@ func (s *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 	registerUserStruct := &model.User{
 		Email:    req.Email,
 		Password: utils.EncodePassword(req.Email, req.Password),
-		Salt:     fmt.Sprintf("%s%s", consts.SECRET, req.Email),
+		Salt:     fmt.Sprintf("%s%s", consts.SECRET_SALT, req.Email),
 	}
 	if success := registerUserStruct.Create(); !success {
 		resp.UserId = -1

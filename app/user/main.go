@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/user/biz/dal"
+	mtl "github.com/Blue-Berrys/Tiktok_e_commerce/app/user/common/mtl"
 	"net"
 	"time"
 
@@ -11,12 +12,26 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
+	"github.com/joho/godotenv"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var serviceName = conf.GetConf().Kitex.Service
+
 func main() {
+	_ = godotenv.Load()
+	
+	mtl.InitLog(&lumberjack.Logger{
+		Filename:   conf.GetConf().Kitex.LogFileName,
+		MaxSize:    conf.GetConf().Kitex.LogMaxSize,
+		MaxBackups: conf.GetConf().Kitex.LogMaxBackups,
+		MaxAge:     conf.GetConf().Kitex.LogMaxAge,
+	})
+	mtl.InitTracing(serviceName)
+	mtl.InitMetric(serviceName, conf.GetConf().Kitex.MetricsPort, conf.GetConf().Registry.RegistryAddress[0])
+
 	opts := kitexInit()
 
 	svr := userservice.NewServer(new(UserServiceImpl), opts...)
