@@ -16,7 +16,7 @@ message RegisterReq {
 }
 
 message RegisterResp {
-    int32 user_id = 1;
+    CommonResponse common=1;
 }
 
 message LoginReq {
@@ -25,5 +25,50 @@ message LoginReq {
 }
 
 message LoginResp {
-    int32 user_id = 1;
+    CommonResponse common=1;
+}
+
+
+message LoadBalanceTestResponse {
+    CommonResponse common = 1;
+    string status = 2;
+}
+
+message CommonResponse {
+    RetCode code =1;
+    string msg =2;
+}
+enum RetCode {
+    SUCCESS = 0;
+    ERROR = 500;
+    USER_NOT_EXIST = 50001;
+    USER_EXIST = 50002;
+    MERCHANT_NOT_EXIST = 50003;
+    MERCHANT_EXIST = 50004;
+    ACCOUNT_EXIST = 50005;
+    ACCOUNT_NOT_EXIST = 50006;
+    USER_PWD_NOT_MATCH = 50007;
+    USER_DELIVERY_INFO_EXIST = 50009;
+    USER_DELIVERY_INFO_NOT_EXIST = 50010;
+    TRANSACTION_FAILED = 50011;
+    ACCOUNT_LOCK = 50012;
+    ACCOUNT_INVALID = 50013;
+    USER_CHARGE_RUN = 50014;
+    USER_CHARGE_SUCCESS = 50015;
+    USER_CHARGE_TRADE_NO_EMPTY = 50016;
+    USER_STATE_NOT_VERIFY = 50017;
+    USER_STATE_FORBIDDEN_LOGIN = 50018;
+    USER_VERIFY_CODE_LIMITED = 50019;
+    USER_VERIFY_CODE_INTERVAL = 50020; // 验证码生成错误
+    USER_VERIFY_CODE_FORBIDDEN = 50021;
+    USER_VERIFY_CODE_EXPIRE = 50022;
+    USER_VERIFY_CODE_INVALID = 50023;
+    USER_INVITE_CODE_INVALID = 50024;
+}
+
+enum OperationType {
+    CREATE = 0;
+    UPDATE = 1;
+    DELETE = 2;
+    AUDIT = 3;
 }

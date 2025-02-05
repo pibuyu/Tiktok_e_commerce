@@ -78,8 +78,13 @@ ReadFieldError:
 }
 
 func (x *RegisterResp) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	x.UserId, offset, err = fastpb.ReadInt32(buf, _type)
-	return offset, err
+	var v CommonResponse
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Common = &v
+	return offset, nil
 }
 
 func (x *LoginReq) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
@@ -138,7 +143,92 @@ ReadFieldError:
 }
 
 func (x *LoginResp) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	x.UserId, offset, err = fastpb.ReadInt32(buf, _type)
+	var v CommonResponse
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Common = &v
+	return offset, nil
+}
+
+func (x *LoadBalanceTestResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_LoadBalanceTestResponse[number], err)
+}
+
+func (x *LoadBalanceTestResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	var v CommonResponse
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Common = &v
+	return offset, nil
+}
+
+func (x *LoadBalanceTestResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Status, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *CommonResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_CommonResponse[number], err)
+}
+
+func (x *CommonResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	var v int32
+	v, offset, err = fastpb.ReadInt32(buf, _type)
+	if err != nil {
+		return offset, err
+	}
+	x.Code = RetCode(v)
+	return offset, nil
+}
+
+func (x *CommonResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Msg, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -185,10 +275,10 @@ func (x *RegisterResp) FastWrite(buf []byte) (offset int) {
 }
 
 func (x *RegisterResp) fastWriteField1(buf []byte) (offset int) {
-	if x.UserId == 0 {
+	if x.Common == nil {
 		return offset
 	}
-	offset += fastpb.WriteInt32(buf[offset:], 1, x.GetUserId())
+	offset += fastpb.WriteMessage(buf[offset:], 1, x.GetCommon())
 	return offset
 }
 
@@ -226,10 +316,60 @@ func (x *LoginResp) FastWrite(buf []byte) (offset int) {
 }
 
 func (x *LoginResp) fastWriteField1(buf []byte) (offset int) {
-	if x.UserId == 0 {
+	if x.Common == nil {
 		return offset
 	}
-	offset += fastpb.WriteInt32(buf[offset:], 1, x.GetUserId())
+	offset += fastpb.WriteMessage(buf[offset:], 1, x.GetCommon())
+	return offset
+}
+
+func (x *LoadBalanceTestResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *LoadBalanceTestResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.Common == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 1, x.GetCommon())
+	return offset
+}
+
+func (x *LoadBalanceTestResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.Status == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetStatus())
+	return offset
+}
+
+func (x *CommonResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *CommonResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.Code == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt32(buf[offset:], 1, int32(x.GetCode()))
+	return offset
+}
+
+func (x *CommonResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.Msg == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetMsg())
 	return offset
 }
 
@@ -276,10 +416,10 @@ func (x *RegisterResp) Size() (n int) {
 }
 
 func (x *RegisterResp) sizeField1() (n int) {
-	if x.UserId == 0 {
+	if x.Common == nil {
 		return n
 	}
-	n += fastpb.SizeInt32(1, x.GetUserId())
+	n += fastpb.SizeMessage(1, x.GetCommon())
 	return n
 }
 
@@ -317,10 +457,60 @@ func (x *LoginResp) Size() (n int) {
 }
 
 func (x *LoginResp) sizeField1() (n int) {
-	if x.UserId == 0 {
+	if x.Common == nil {
 		return n
 	}
-	n += fastpb.SizeInt32(1, x.GetUserId())
+	n += fastpb.SizeMessage(1, x.GetCommon())
+	return n
+}
+
+func (x *LoadBalanceTestResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *LoadBalanceTestResponse) sizeField1() (n int) {
+	if x.Common == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(1, x.GetCommon())
+	return n
+}
+
+func (x *LoadBalanceTestResponse) sizeField2() (n int) {
+	if x.Status == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetStatus())
+	return n
+}
+
+func (x *CommonResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *CommonResponse) sizeField1() (n int) {
+	if x.Code == 0 {
+		return n
+	}
+	n += fastpb.SizeInt32(1, int32(x.GetCode()))
+	return n
+}
+
+func (x *CommonResponse) sizeField2() (n int) {
+	if x.Msg == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetMsg())
 	return n
 }
 
@@ -331,7 +521,7 @@ var fieldIDToName_RegisterReq = map[int32]string{
 }
 
 var fieldIDToName_RegisterResp = map[int32]string{
-	1: "UserId",
+	1: "Common",
 }
 
 var fieldIDToName_LoginReq = map[int32]string{
@@ -340,5 +530,15 @@ var fieldIDToName_LoginReq = map[int32]string{
 }
 
 var fieldIDToName_LoginResp = map[int32]string{
-	1: "UserId",
+	1: "Common",
+}
+
+var fieldIDToName_LoadBalanceTestResponse = map[int32]string{
+	1: "Common",
+	2: "Status",
+}
+
+var fieldIDToName_CommonResponse = map[int32]string{
+	1: "Code",
+	2: "Msg",
 }

@@ -1,20 +1,27 @@
 package main
 
 import (
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/payment/biz/dal"
+	"github.com/joho/godotenv"
 	"net"
 	"time"
 
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/payment/conf"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/payment/paymentservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	"github.com/Blue-Berrys/Tiktok_e_commerce/app/payment/conf"
-	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/payment/paymentservice"
+	consul "github.com/kitex-contrib/registry-consul"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func main() {
+	//load env variables
+	_ = godotenv.Load()
+	dal.Init()
+
 	opts := kitexInit()
 
 	svr := paymentservice.NewServer(new(PaymentServiceImpl), opts...)
@@ -33,10 +40,16 @@ func kitexInit() (opts []server.Option) {
 	}
 	opts = append(opts, server.WithServiceAddr(addr))
 
+	//service register
+	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	if err != nil {
+		klog.Fatal(err)
+	}
+
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 		ServiceName: conf.GetConf().Kitex.Service,
-	}))
+	}), server.WithRegistry(r))
 
 	// klog
 	logger := kitexlogrus.NewLogger()

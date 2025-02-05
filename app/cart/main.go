@@ -1,22 +1,30 @@
 package main
 
 import (
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/serversuite"
 	"net"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	"github.com/cloudwego/kitex/server"
-	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/cart/conf"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/cart/cartservice"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/server"
+	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-func main() {
-	opts := kitexInit()
+var (
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+)
 
+func main() {
+
+	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
+	opts := kitexInit()
 	svr := cartservice.NewServer(new(CartServiceImpl), opts...)
 
 	err := svr.Run()
@@ -31,11 +39,11 @@ func kitexInit() (opts []server.Option) {
 	if err != nil {
 		panic(err)
 	}
-	opts = append(opts, server.WithServiceAddr(addr))
 
-	// service info
-	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
-		ServiceName: conf.GetConf().Kitex.Service,
+	//替换原本的server info
+	opts = append(opts, server.WithServiceAddr(addr), server.WithSuite(serversuite.CommonServerSuite{
+		CurrentServiceName: ServiceName,
+		RegistryAddr:       RegistryAddr,
 	}))
 
 	// klog

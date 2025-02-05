@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -9,7 +10,6 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kr/pretty"
 	"gopkg.in/validator.v2"
-	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -44,6 +44,8 @@ type Kitex struct {
 	LogMaxSize    int    `yaml:"log_max_size"`
 	LogMaxBackups int    `yaml:"log_max_backups"`
 	LogMaxAge     int    `yaml:"log_max_age"`
+
+	MetricsPort string `yaml:"metrics_port"`
 }
 
 type Registry struct {

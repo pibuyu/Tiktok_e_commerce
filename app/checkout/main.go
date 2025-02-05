@@ -1,15 +1,16 @@
 package main
 
 import (
+	consul "github.com/kitex-contrib/registry-consul"
 	"net"
 	"time"
 
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/conf"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/checkout/checkoutservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/conf"
-	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/checkout/checkoutservice"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -32,6 +33,12 @@ func kitexInit() (opts []server.Option) {
 		panic(err)
 	}
 	opts = append(opts, server.WithServiceAddr(addr))
+
+	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	if err != nil {
+		klog.Fatal(err)
+	}
+	opts = append(opts, server.WithServiceAddr(addr), server.WithRegistry(r))
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
