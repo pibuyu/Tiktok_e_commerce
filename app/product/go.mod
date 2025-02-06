@@ -4,7 +4,7 @@ go 1.23.3
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
-replace github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/product => ../../rpc_gen/kitex_gen/product
+replace github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen => ../../rpc_gen
 
 require (
 	github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen v0.0.0-20250118072617-4ec84d4b304e

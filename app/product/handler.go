@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/product/biz/service"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	
 )
 
@@ -33,6 +34,20 @@ func (s *ProductCatalogServiceImpl) SearchProducts(ctx context.Context, req *pro
 // CreateProduct implements the ProductCatalogServiceImpl interface.
 func (s *ProductCatalogServiceImpl) CreateProduct(ctx context.Context, req *product.CreateProductReq) (resp *product.CreateProductResp, err error) {
 	resp, err = service.NewCreateProductService(ctx).Run(req)
+
+	return resp, err
+}
+
+// DeleteProduct implements the ProductCatalogServiceImpl interface.
+func (s *ProductCatalogServiceImpl) DeleteProduct(ctx context.Context, req *product.DeleteProductReq) (resp *common.Empty, err error) {
+	resp, err = service.NewDeleteProductService(ctx).Run(req)
+
+	return resp, err
+}
+
+// UpdateProductInfo implements the ProductCatalogServiceImpl interface.
+func (s *ProductCatalogServiceImpl) UpdateProductInfo(ctx context.Context, req *product.UpdateProductInfoReq) (resp *common.Empty, err error) {
+	resp, err = service.NewUpdateProductInfoService(ctx).Run(req)
 
 	return resp, err
 }

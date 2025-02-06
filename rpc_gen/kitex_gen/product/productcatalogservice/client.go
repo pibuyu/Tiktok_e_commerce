@@ -4,6 +4,7 @@ package productcatalogservice
 
 import (
 	"context"
+	common "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	product "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/product"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
@@ -15,6 +16,8 @@ type Client interface {
 	GetProduct(ctx context.Context, Req *product.GetProductReq, callOptions ...callopt.Option) (r *product.GetProductResp, err error)
 	SearchProducts(ctx context.Context, Req *product.SearchProductsReq, callOptions ...callopt.Option) (r *product.SearchProductsResp, err error)
 	CreateProduct(ctx context.Context, Req *product.CreateProductReq, callOptions ...callopt.Option) (r *product.CreateProductResp, err error)
+	DeleteProduct(ctx context.Context, Req *product.DeleteProductReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	UpdateProductInfo(ctx context.Context, Req *product.UpdateProductInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -64,4 +67,14 @@ func (p *kProductCatalogServiceClient) SearchProducts(ctx context.Context, Req *
 func (p *kProductCatalogServiceClient) CreateProduct(ctx context.Context, Req *product.CreateProductReq, callOptions ...callopt.Option) (r *product.CreateProductResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.CreateProduct(ctx, Req)
+}
+
+func (p *kProductCatalogServiceClient) DeleteProduct(ctx context.Context, Req *product.DeleteProductReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.DeleteProduct(ctx, Req)
+}
+
+func (p *kProductCatalogServiceClient) UpdateProductInfo(ctx context.Context, Req *product.UpdateProductInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateProductInfo(ctx, Req)
 }

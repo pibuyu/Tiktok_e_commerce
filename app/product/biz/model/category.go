@@ -29,6 +29,21 @@ func (c CategoryQuery) GetProductsByCategoryName(name string) (categories []Cate
 		Find(&categories).Error
 	return
 }
+
+// GetCategoryById 根据分类id获取分类
+func (c CategoryQuery) GetCategoryById(name string) (result *Category, err error) {
+	err = c.db.WithContext(c.ctx).Debug().Model(&Category{}).Where("name = ?", name).Find(&result).Error
+	return
+}
+func (c CategoryQuery) CreateCategory(name string) (err error) {
+	cate := &Category{
+		Name:        name,
+		Description: name,
+	}
+	err = c.db.WithContext(c.ctx).Debug().Model(&Category{}).Create(&cate).Error
+	return
+}
+
 func NewCategoryQuery(ctx context.Context, db *gorm.DB) *CategoryQuery {
 	return &CategoryQuery{
 		ctx: ctx,

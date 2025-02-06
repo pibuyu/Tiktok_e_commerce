@@ -2,6 +2,7 @@ package product
 
 import (
 	"context"
+	common "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	product "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/product"
 
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/product/productcatalogservice"
@@ -16,6 +17,8 @@ type RPCClient interface {
 	GetProduct(ctx context.Context, Req *product.GetProductReq, callOptions ...callopt.Option) (r *product.GetProductResp, err error)
 	SearchProducts(ctx context.Context, Req *product.SearchProductsReq, callOptions ...callopt.Option) (r *product.SearchProductsResp, err error)
 	CreateProduct(ctx context.Context, Req *product.CreateProductReq, callOptions ...callopt.Option) (r *product.CreateProductResp, err error)
+	DeleteProduct(ctx context.Context, Req *product.DeleteProductReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	UpdateProductInfo(ctx context.Context, Req *product.UpdateProductInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
 func NewRPCClient(dstService string, opts ...client.Option) (RPCClient, error) {
@@ -58,4 +61,12 @@ func (c *clientImpl) SearchProducts(ctx context.Context, Req *product.SearchProd
 
 func (c *clientImpl) CreateProduct(ctx context.Context, Req *product.CreateProductReq, callOptions ...callopt.Option) (r *product.CreateProductResp, err error) {
 	return c.kitexClient.CreateProduct(ctx, Req, callOptions...)
+}
+
+func (c *clientImpl) DeleteProduct(ctx context.Context, Req *product.DeleteProductReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	return c.kitexClient.DeleteProduct(ctx, Req, callOptions...)
+}
+
+func (c *clientImpl) UpdateProductInfo(ctx context.Context, Req *product.UpdateProductInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	return c.kitexClient.UpdateProductInfo(ctx, Req, callOptions...)
 }
