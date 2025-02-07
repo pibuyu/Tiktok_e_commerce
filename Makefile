@@ -14,12 +14,10 @@ gen-product:
 	@cd app/product && cwgo server --type RPC --service product --module ${ROOT_MOD}/app/product --I ../../idl --idl ../../idl/product.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
 
 
-.PHONY:gen-cart-client
-gen-cart-client:
-	@cd rpc_gen && ${CWGO} client --type RPC --service cart --module ${ROOT_MOD}/rpc_gen --I ../idl --idl ../idl/cart.proto
-.PHONY:gen-cart-server
-gen-cart-server:
-	@cd app/cart &&  ${CWGO} server --type RPC --service cart --module ${ROOT_MOD}/app/cart --I ../../idl --idl ../../idl/cart.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
+.PHONY:gen-cart
+gen-cart:
+	@cd rpc_gen && cwgo client --type RPC --service cart --module ${ROOT_MOD}/rpc_gen --I ../idl --idl ../idl/cart.proto
+	@cd app/cart &&  cwgo server --type RPC --service cart --module ${ROOT_MOD}/app/cart --I ../../idl --idl ../../idl/cart.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
 
 
 .PHONY:gen-payment

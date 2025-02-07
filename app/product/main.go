@@ -41,6 +41,9 @@ func kitexInit() (opts []server.Option) {
 
 	//service registry
 	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	if err != nil {
+		klog.Error("fail to register into consul:", err.Error())
+	}
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{

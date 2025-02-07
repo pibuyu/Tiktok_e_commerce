@@ -1,8 +1,11 @@
 package main
 
 import (
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/cart/biz/dal"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/cart/infra/rpc"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/serversuite"
+	"github.com/joho/godotenv"
 	"net"
 	"time"
 
@@ -23,6 +26,11 @@ var (
 func main() {
 
 	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
+	_ = godotenv.Load()
+	dal.Init()
+
+	rpc.InitClient()
 
 	opts := kitexInit()
 	svr := cartservice.NewServer(new(CartServiceImpl), opts...)

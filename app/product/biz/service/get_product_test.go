@@ -25,7 +25,7 @@ func TestGetProduct_Run(t *testing.T) {
 
 	//同样应该先确认获取信息的商品id存在于product表中
 	req := &product.GetProductReq{
-		Id: 1,
+		Id: 13,
 	}
 	resp, err := s.Run(req)
 	t.Logf("err: %v", err)

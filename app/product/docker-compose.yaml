@@ -3,13 +3,20 @@ services:
   mysql:
     image: 'mysql:latest'
     ports:
-      - 3306:3306
+      - 33006:3307
     environment:
-      - MYSQL_DATABASE=gorm
-      - MYSQL_USER=gorm
-      - MYSQL_PASSWORD=gorm
-      - MYSQL_RANDOM_ROOT_PASSWORD="yes"
+      - MYSQL_DATABASE=DYMall
+      - MYSQL_USER=DYMall
+      - MYSQL_PASSWORD=DYMall
+      - MYSQL_ROOT_PASSWORD="DYMall"
   redis:
     image: 'redis:latest'
     ports:
       - 6379:6379
+  consul:
+    image: 'consul:latest'
+    ports:
+      - 8500:8500
+    command:
+      - 'agent -dev -client=0.0.0.0'
+

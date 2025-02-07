@@ -1,23 +1,30 @@
 kitex:
   service: "product"
-  address: ":8888"
+  address: ":8883"
   log_level: info
   log_file_name: "log/kitex.log"
   log_max_size: 10
   log_max_age: 3
   log_max_backups: 50
+  check:
+    http: "https://6c46-2001-250-3000-2b70-fcba-7e05-388b-c0af.ngrok-free.app /health"  # 使用实际的IP地址
+    interval: "10s"                           # 健康检查间隔
+    timeout: "5s"                             # 健康检查超时时间
+    deregistercriticalserviceafter: "90s"     # 服务被标记为不健康后，90秒后从Consul注销
 
 registry:
   registry_address:
-    - 127.0.0.1:2379
+#    - 测试时用本地的consul注册中心，上线的时候记得修改.因为consul部署在服务器上，本地的8883端口没有开放，健康检查会报错
+    - 127.0.0.1:8500
   username: ""
   password: ""
+
 
 mysql:
-  dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "DYMall:DYMall@tcp(8.138.149.242:3306)/DYMall?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
-  address: "127.0.0.1:6379"
+  address: "8.138.149.242:6379"
   username: ""
-  password: ""
+  password: "hhf001113"
   db: 0

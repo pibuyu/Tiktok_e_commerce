@@ -2,7 +2,10 @@ package service
 
 import (
 	"context"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/cart/biz/dal/model"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/cart/biz/dal/mysql"
 	cart "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/cart"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 )
 
 type GetCartService struct {
@@ -14,7 +17,21 @@ func NewGetCartService(ctx context.Context) *GetCartService {
 
 // Run create note info
 func (s *GetCartService) Run(req *cart.GetCartReq) (resp *cart.GetCartResp, err error) {
-	// Finish your business logic.
+	list, err := model.GetCartBtUserId(s.ctx, mysql.DB, req.UserId)
+	if err != nil {
+		return nil, kerrors.NewBizStatusError(50002, err.Error())
+	}
 
-	return
+	var items []*cart.CartItem
+	for _, productItem := range list {
+		items = append(items, &cart.CartItem{
+			ProductId: productItem.ProductId,
+			Quantity:  int32(productItem.Qty),
+		})
+	}
+
+	return &cart.GetCartResp{Cart: &cart.Cart{
+		UserId: req.UserId,
+		Items:  items,
+	}}, nil
 }

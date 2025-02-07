@@ -45,6 +45,7 @@ func ReturnsInstance() *gorm.DB {
 	if err := retry.Do(ctx, retry.WithMaxRetries(5, b), func(ctx context.Context) error {
 		var err error
 		dsn := conf.GetConf().MySQL.DSN
+		//dsn := "DYMall:DYMall@tcp(8.138.149.242:3306)/DYMall?charset=utf8mb4&parseTime=True&loc=Local"
 		DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 			Logger: myLogger,
 		})
