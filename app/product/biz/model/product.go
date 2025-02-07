@@ -33,7 +33,8 @@ func (p ProductQuery) GetById(productId int) (product Product, err error) {
 
 // SearchProducts 根据关键词查询商品
 func (p ProductQuery) SearchProducts(q string) (products []*Product, err error) {
-	err = p.db.WithContext(p.ctx).Model(&Product{}).Find(&products, "name like ? or description like ?", "%"+q+"%", "%"+q+"%").Error
+	err = p.db.WithContext(p.ctx).Model(&Product{}).
+		Find(&products, "name like ? or description like ?", "%"+q+"%", "%"+q+"%").Error
 	return
 }
 

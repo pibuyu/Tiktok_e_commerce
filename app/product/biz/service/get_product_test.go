@@ -19,16 +19,15 @@ func TestGetProduct_Run(t *testing.T) {
 		log.Fatalf("chdir err : %v", err)
 	}
 
+	//init database
 	_ = godotenv.Load()
 	dal.Init()
 
+	//同样应该先确认获取信息的商品id存在于product表中
 	req := &product.GetProductReq{
 		Id: 1,
 	}
 	resp, err := s.Run(req)
 	t.Logf("err: %v", err)
 	t.Logf("resp: %v", resp)
-
-	// todo: edit your unit test
-
 }

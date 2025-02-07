@@ -20,6 +20,8 @@ func (s *ListProductsService) Run(req *product.ListProductsReq) (resp *product.L
 
 	c, err := categoryQuery.GetProductsByCategoryName(req.CategoryName)
 
+	//记得给resp分配内存
+	resp = &product.ListProductsResp{}
 	//遍历列表
 	for _, v1 := range c {
 		//遍历列表的商品

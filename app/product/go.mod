@@ -2,7 +2,6 @@ module github.com/Blue-Berrys/Tiktok_e_commerce/app/product
 
 go 1.23.3
 
-replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 replace github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen => ../../rpc_gen
 
