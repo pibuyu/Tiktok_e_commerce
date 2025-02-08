@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/payment/biz/dal"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/serversuite"
 	"github.com/joho/godotenv"
 	"net"
 	"time"
@@ -13,7 +14,6 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	consul "github.com/kitex-contrib/registry-consul"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -50,15 +50,19 @@ func kitexInit() (opts []server.Option) {
 	opts = append(opts, server.WithServiceAddr(addr))
 
 	//service register
-	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
-	if err != nil {
-		klog.Fatal(err)
-	}
+	//r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	//if err != nil {
+	//	klog.Fatal(err)
+	//}
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 		ServiceName: conf.GetConf().Kitex.Service,
-	}), server.WithRegistry(r))
+	}))
+	opts = append(opts, server.WithSuite(serversuite.CommonServerSuite{
+		CurrentServiceName: ServiceName,
+		RegistryAddr:       RegistryAddr,
+	}))
 
 	// klog
 	logger := kitexlogrus.NewLogger()

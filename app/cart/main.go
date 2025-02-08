@@ -50,7 +50,7 @@ func kitexInit() (opts []server.Option) {
 		panic(err)
 	}
 
-	//替换原本的server info
+	//server info,整合service registry
 	opts = append(opts, server.WithServiceAddr(addr), server.WithSuite(serversuite.CommonServerSuite{
 		CurrentServiceName: ServiceName,
 		RegistryAddr:       RegistryAddr,

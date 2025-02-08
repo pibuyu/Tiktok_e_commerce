@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/product/biz/dal"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/serversuite"
 	"github.com/joho/godotenv"
-	consul "github.com/kitex-contrib/registry-consul"
 	"net"
 	"time"
 
@@ -50,15 +50,19 @@ func kitexInit() (opts []server.Option) {
 	opts = append(opts, server.WithServiceAddr(addr))
 
 	//service registry
-	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
-	if err != nil {
-		klog.Error("fail to register into consul:", err.Error())
-	}
+	//r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	//if err != nil {
+	//	klog.Error("fail to register into consul:", err.Error())
+	//}
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 		ServiceName: conf.GetConf().Kitex.Service,
-	}), server.WithRegistry(r))
+	}))
+	opts = append(opts, server.WithSuite(serversuite.CommonServerSuite{
+		CurrentServiceName: ServiceName,
+		RegistryAddr:       RegistryAddr,
+	}))
 
 	// klog
 	logger := kitexlogrus.NewLogger()

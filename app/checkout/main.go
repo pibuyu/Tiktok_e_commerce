@@ -1,7 +1,8 @@
 package main
 
 import (
-	consul "github.com/kitex-contrib/registry-consul"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/serversuite"
 	"net"
 	"time"
 
@@ -15,7 +16,15 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+)
+
 func main() {
+	//init metrics.注意需要放在init dal和rpc之前,后者可能依赖前者
+	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
 	opts := kitexInit()
 
 	svr := checkoutservice.NewServer(new(CheckoutServiceImpl), opts...)
@@ -34,15 +43,20 @@ func kitexInit() (opts []server.Option) {
 	}
 	opts = append(opts, server.WithServiceAddr(addr))
 
-	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
-	if err != nil {
-		klog.Fatal(err)
-	}
-	opts = append(opts, server.WithServiceAddr(addr), server.WithRegistry(r))
+	//service register
+	//r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	//if err != nil {
+	//	klog.Fatal(err)
+	//}
+	//opts = append(opts, server.WithServiceAddr(addr), server.WithRegistry(r))
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 		ServiceName: conf.GetConf().Kitex.Service,
+	}))
+	opts = append(opts, server.WithSuite(serversuite.CommonServerSuite{
+		CurrentServiceName: ServiceName,
+		RegistryAddr:       RegistryAddr,
 	}))
 
 	// klog
