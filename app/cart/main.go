@@ -24,12 +24,14 @@ var (
 )
 
 func main() {
-
+	//init metrics.注意需要放在init dal和rpc之前,后者可能依赖前者
 	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
 
+	//init database
 	_ = godotenv.Load()
 	dal.Init()
 
+	//init rpc client
 	rpc.InitClient()
 
 	opts := kitexInit()

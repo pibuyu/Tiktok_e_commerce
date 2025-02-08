@@ -35,12 +35,14 @@ func InitMetric(serviceName, metricsPort, registryAddr string) {
 
 	//shutdown钩子，服务关闭时下线注册信息
 	server.RegisterShutdownHook(func() {
-		r.Deregister(registryInfo)
+		_ = r.Deregister(registryInfo)
 	})
 
 	//启动metric server
 	http.Handle("/metrics", promhttp.HandlerFor(Registry, promhttp.HandlerOpts{}))
 
 	//异步启动一个server供prometheus拉取指标
-	go http.ListenAndServe(metricsPort, nil)
+	go func() {
+		_ = http.ListenAndServe(metricsPort, nil)
+	}()
 }

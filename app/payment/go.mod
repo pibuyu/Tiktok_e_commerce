@@ -1,10 +1,11 @@
 module github.com/Blue-Berrys/Tiktok_e_commerce/app/payment
 
-go 1.23.3
+go 1.23.4
 
-replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
+replace github.com/Blue-Berrys/Tiktok_e_commerce/common => ../../common
 
 require (
+	github.com/Blue-Berrys/Tiktok_e_commerce/common v0.0.0-00010101000000-000000000000
 	github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen v0.0.0-20250118072617-4ec84d4b304e
 	github.com/cloudwego/kitex v0.12.1
 	github.com/durango/go-credit-card v0.0.0-20220404131259-a9e175ba4082
@@ -25,6 +26,7 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
+	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/gopkg v0.1.1 // indirect
 	github.com/bytedance/sonic v1.12.5 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
@@ -63,12 +65,17 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/gls v0.0.0-20220109145502-612d0167dce5 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/prometheus/client_golang v1.14.0 // indirect
+	github.com/prometheus/client_model v0.3.0 // indirect
+	github.com/prometheus/common v0.37.0 // indirect
+	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/sirupsen/logrus v1.9.2 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect

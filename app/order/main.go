@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/dal"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
 	"github.com/joho/godotenv"
 	consul "github.com/kitex-contrib/registry-consul"
 	"net"
@@ -17,7 +18,15 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+)
+
 func main() {
+	//init metrics
+	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
 	opts := kitexInit()
 
 	_ = godotenv.Load()

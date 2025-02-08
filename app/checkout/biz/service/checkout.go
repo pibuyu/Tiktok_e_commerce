@@ -75,13 +75,12 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 	}
 
 	//2.3 empty user cart
-	//todo:先不清空购物车，调试ing...
-	//_, err = rpc.CartClient.EmptyCart(s.ctx, &cart.EmptyCartReq{
-	//	UserId: req.UserId,
-	//})
-	//if err != nil {
-	//	klog.Error(err.Error())
-	//}
+	_, err = rpc.CartClient.EmptyCart(s.ctx, &cart.EmptyCartReq{
+		UserId: req.UserId,
+	})
+	if err != nil {
+		klog.Error(err.Error())
+	}
 
 	//3.1 charge the order.结算订单
 	paymentResult, err := rpc.PaymentClient.Charge(s.ctx, payReq)

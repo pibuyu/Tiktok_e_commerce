@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/payment/biz/dal"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
 	"github.com/joho/godotenv"
 	"net"
 	"time"
@@ -17,8 +18,16 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+)
+
 func main() {
-	//load env variables
+	//init metrics.注意需要放在init dal和rpc之前,后者可能依赖前者
+	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
+	//init database
 	_ = godotenv.Load()
 	dal.Init()
 
