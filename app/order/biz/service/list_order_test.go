@@ -2,19 +2,33 @@ package service
 
 import (
 	"context"
-	"testing"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/dal"
 	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+	"testing"
 )
 
 func TestListOrder_Run(t *testing.T) {
 	ctx := context.Background()
 	s := NewListOrderService(ctx)
-	// init req and assert value
 
-	req := &order.ListOrderReq{}
+	//chdir to adjust config file path
+	if err := os.Chdir("../.."); err != nil {
+		log.Fatalf("chdir err : %v", err)
+	}
+
+	//init database
+	_ = godotenv.Load()
+	dal.Init()
+
+	req := &order.ListOrderReq{
+		UserId: 1,
+	}
 	resp, err := s.Run(req)
 	t.Logf("err: %v", err)
-	t.Logf("resp: %v", resp)
+	t.Logf("resp: %+v", resp)
 
 	// todo: edit your unit test
 
