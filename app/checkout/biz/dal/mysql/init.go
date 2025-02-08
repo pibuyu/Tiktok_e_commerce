@@ -1,8 +1,6 @@
 package mysql
 
 import (
-	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/conf"
-
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -13,7 +11,8 @@ var (
 )
 
 func Init() {
-	DB, err = gorm.Open(mysql.Open(conf.GetConf().MySQL.DSN),
+	dsn := "DYMall:DYMall@tcp(8.138.149.242:3306)/DYMall?charset=utf8mb4&parseTime=True&loc=Local" //先给写死
+	DB, err = gorm.Open(mysql.Open(dsn),
 		&gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,

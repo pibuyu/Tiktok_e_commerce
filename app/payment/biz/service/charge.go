@@ -6,6 +6,7 @@ import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/payment/biz/model"
 	payment "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/payment"
 	"github.com/cloudwego/kitex/pkg/kerrors"
+	"github.com/cloudwego/kitex/pkg/klog"
 	creditcard "github.com/durango/go-credit-card"
 	"github.com/google/uuid"
 	"strconv"
@@ -30,6 +31,7 @@ func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, e
 	}
 	err = card.Validate(true)
 	if err != nil {
+		klog.Errorf("fail to validate credit number:%v", err)
 		return nil, kerrors.NewGRPCBizStatusError(4004001, err.Error())
 	}
 	transactionId, err := uuid.NewRandom()

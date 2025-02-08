@@ -21,7 +21,10 @@ func NewCheckoutService(ctx context.Context) *CheckoutService {
 
 // Run create note info
 func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.CheckoutResp, err error) {
-	// 1.get user's cart product
+	if rpc.CartClient == nil {
+		rpc.InitClient()
+	}
+	// 1.1.get user's cart product
 	cartResult, err := rpc.CartClient.GetCart(s.ctx, &cart.GetCartReq{
 		UserId: req.UserId,
 	})
@@ -31,8 +34,9 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 	if cartResult == nil || cartResult.Cart.Items == nil {
 		return nil, kerrors.NewGRPCBizStatusError(5005001, "cart is empty")
 	}
+	klog.Infof("查询到的购物车结果为：%v", cartResult)
 
-	//2.calculate order amount
+	// 1.2.calculate order amount
 	var total float32
 	for _, cartItem := range cartResult.Cart.Items {
 		productResp, err := rpc.ProductClient.GetProduct(s.ctx, &product.GetProductReq{
@@ -49,14 +53,15 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 
 		total += cost
 	}
+	klog.Infof("计算出的订单金额为:%v", total)
 
-	//3.create virtual orderId replace
+	//2.1.create virtual orderId replace
 	var orderId string
 
 	u, _ := uuid.NewRandom()
 	orderId = u.String()
 
-	//4.payment request param and clean cart
+	//2.2.payment request param and clean cart
 	payReq := &payment.ChargeReq{
 		UserId:  req.UserId,
 		OrderId: orderId,
@@ -69,18 +74,21 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 		},
 	}
 
-	_, err = rpc.CartClient.EmptyCart(s.ctx, &cart.EmptyCartReq{
-		UserId: req.UserId,
-	})
-	if err != nil {
-		klog.Error(err.Error())
-	}
+	//2.3 empty user cart
+	//todo:先不清空购物车，调试ing...
+	//_, err = rpc.CartClient.EmptyCart(s.ctx, &cart.EmptyCartReq{
+	//	UserId: req.UserId,
+	//})
+	//if err != nil {
+	//	klog.Error(err.Error())
+	//}
 
+	//3.1 charge the order.结算订单
 	paymentResult, err := rpc.PaymentClient.Charge(s.ctx, payReq)
 	if err != nil {
 		return nil, err
 	}
-	klog.Info(paymentResult)
+	klog.Infof("结算订单的返回结果为:%v", paymentResult)
 
 	resp = &checkout.CheckoutResp{
 		OrderId:       orderId,

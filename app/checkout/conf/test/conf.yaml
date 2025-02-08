@@ -9,7 +9,7 @@ kitex:
 
 registry:
   registry_address:
-    - 101.126.144.39:8500
+    - 127.0.0.1:8500
   username: ""
   password: ""
 
