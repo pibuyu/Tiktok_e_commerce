@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/dal"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/serversuite"
@@ -26,6 +27,13 @@ var (
 func main() {
 	//init metrics
 	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
+	//init tracing
+	p := mtl.InitTracing(ServiceName)
+	defer func() {
+		//退出前上传剩余链路数据
+		_ = p.Shutdown(context.Background())
+	}()
 
 	opts := kitexInit()
 

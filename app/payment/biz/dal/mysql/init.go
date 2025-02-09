@@ -7,6 +7,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/plugin/opentelemetry/tracing"
 	"os"
 )
 
@@ -25,6 +26,11 @@ func Init() {
 	})
 	_ = DB.AutoMigrate(&model.PaymentLog{})
 	if err != nil {
+		panic(err)
+	}
+
+	//add tracing
+	if err := DB.Use(tracing.NewPlugin(tracing.WithoutMetrics())); err != nil {
 		panic(err)
 	}
 }

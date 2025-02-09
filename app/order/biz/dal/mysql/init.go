@@ -4,6 +4,7 @@ import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/dal/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/plugin/opentelemetry/tracing"
 	"os"
 )
 
@@ -21,6 +22,11 @@ func Init() {
 		},
 	)
 	if err != nil {
+		panic(err)
+	}
+
+	//add tracing
+	if err := DB.Use(tracing.NewPlugin(tracing.WithoutMetrics())); err != nil {
 		panic(err)
 	}
 

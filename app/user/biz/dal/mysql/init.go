@@ -30,6 +30,7 @@ var (
 //	}
 //}
 
+// todo:修改mysql.DB与其他模块一致，并增加tracing配置
 func ReturnsInstance() *gorm.DB {
 	//sql log config
 	myLogger := logger.New(

@@ -16,6 +16,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+// todo:需要改造与其他模块保持一致，并增加provider相关配置
 func main() {
 	opts := kitexInit()
 

@@ -46,6 +46,13 @@ gen-email:
 
 
 
-.PHONY:gen-frontend
-gen-frontend:
-	@cd app/frontend && cwgo server --type RPC --service frontend --module ${ROOT_MOD}/app/frontend -I ../../idl  --idl ../../idl/frontend/auth_page.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
+#需要额外注意:生成frontend代码时type=HTTP
+.PHONY:gen-frontend-auth
+gen-frontend-auth:
+	@cd app/frontend && cwgo server --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend -I ../../idl  --idl ../../idl/frontend/auth_page.proto
+
+
+.PHONY:gen-frontend-home
+gen-frontend-home:
+	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/home.proto
+#	@cd app/frontend && cwgo server --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend -I ../../idl  --idl ../../idl/frontend/home.proto

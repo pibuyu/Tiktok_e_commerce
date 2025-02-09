@@ -2,7 +2,12 @@ package model
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
+	"time"
 )
 
 type Product struct {
@@ -20,6 +25,12 @@ func (Product) TableName() string {
 }
 
 type ProductQuery struct {
+	ctx context.Context
+	db  *gorm.DB
+}
+
+// ProductMutation 读写分离，给ProductMutation传递写操作
+type ProductMutation struct {
 	ctx context.Context
 	db  *gorm.DB
 }
@@ -68,4 +79,63 @@ func NewProductQuery(ctx context.Context, db *gorm.DB) *ProductQuery {
 		ctx: ctx,
 		db:  db,
 	}
+}
+
+type CachedProductQuery struct {
+	productQuery ProductQuery
+	cacheClient  *redis.Client
+	prefix       string
+}
+
+func NewCachedProductQuery(ctx context.Context, db *gorm.DB, cachedClient *redis.Client) *CachedProductQuery {
+	return &CachedProductQuery{
+		productQuery: *NewProductQuery(ctx, db),
+		cacheClient:  cachedClient,
+		prefix:       "shop",
+	}
+}
+
+func (c CachedProductQuery) GetById(productId int) (product Product, err error) {
+	cachedKey := fmt.Sprintf("%s_%s_%d", c.prefix, "product_by_id", productId)
+	klog.Infof("redisKey:%s", cachedKey)
+	cachedResult := c.cacheClient.Get(c.productQuery.ctx, cachedKey)
+
+	//捕获可能发生的任意错误
+	err = func() error {
+		if err := cachedResult.Err(); err != nil {
+			return err
+		}
+		//获取结果的byte
+		cachedResultByte, err := cachedResult.Bytes()
+		if err != nil {
+			return err
+		}
+		//对byte结果反序列化
+		err = json.Unmarshal(cachedResultByte, &product)
+		if err != nil {
+			return err
+		}
+		return nil
+	}()
+
+	//如果redis查询过程中出错，则使用MySQL查询
+	if err != nil {
+		product, err = c.productQuery.GetById(productId)
+		//MySQL查询也错误,返回错误
+		if err != nil {
+			return Product{}, err
+		}
+
+		//序列化并放入redis
+		encoded, err := json.Marshal(product)
+		if err != nil {
+			return product, nil
+		}
+		_ = c.cacheClient.Set(c.productQuery.ctx, cachedKey, encoded, time.Hour)
+	}
+	return
+}
+
+func (c CachedProductQuery) SearchProducts(q string) (products []*Product, err error) {
+	return c.productQuery.SearchProducts(q)
 }

@@ -1,1 +1,0 @@
-module github.com/Blue-Berrys/Tiktok_e_conmmerce/app/frontend
