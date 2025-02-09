@@ -1,6 +1,7 @@
+{{define "home"}}
 {{template "header" .}}
     <div class="row">
-      {{range .Items}}
+      {{range .items}}
       <div class="card col-xl-3 col-lg-4 col-md-6 col-sm-12 p-5 border-0" >
         <img src="{{.Picture}}" class="card-img-top" alt="...">
         <div class="card-body">
@@ -11,3 +12,4 @@
       {{end}}
     </div>
 {{template "footer"}}
+{{end}}
