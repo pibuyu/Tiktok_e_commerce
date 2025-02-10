@@ -34,7 +34,7 @@ func main() {
 	_ = godotenv.Load()
 
 	//init rpc client
-	rpc.Init()
+	rpc.InitClient()
 
 	// init dal
 	// dal.Init()

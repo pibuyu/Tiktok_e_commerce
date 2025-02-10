@@ -55,4 +55,12 @@ gen-frontend-auth:
 .PHONY:gen-frontend-home
 gen-frontend-home:
 	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/home.proto
-#	@cd app/frontend && cwgo server --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend -I ../../idl  --idl ../../idl/frontend/home.proto
+
+.PHONY:gen-frontend-product
+gen-frontend-product:
+	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/product_page.proto
+
+.PHONY:gen-frontend-category
+gen-frontend-category:
+	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/category_page.proto
+

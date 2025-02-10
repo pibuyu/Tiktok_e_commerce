@@ -42,5 +42,5 @@ func (s *CreateProductService) Run(req *product.CreateProductReq) (resp *product
 	if err != nil {
 		return nil, err
 	}
-	return &product.CreateProductResp{Id: 1}, nil
+	return &product.CreateProductResp{Id: uint32(productItem.ID)}, nil
 }
