@@ -37,6 +37,7 @@ func main() {
 
 	opts := kitexInit()
 
+	//init database
 	_ = godotenv.Load()
 	dal.Init()
 

@@ -2,8 +2,6 @@ package auth
 
 import (
 	"context"
-	"github.com/cloudwego/kitex/pkg/klog"
-
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/biz/service"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/biz/utils"
 	auth "github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/hertz_gen/frontend/auth"
@@ -31,7 +29,6 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
-	klog.Infof("redirect to path:%s", redirect)
 
 	//先重定向回到home
 	c.Redirect(consts.StatusOK, []byte(redirect))

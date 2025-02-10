@@ -7,7 +7,6 @@ import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/cart"
 	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
 	"github.com/cloudwego/kitex/pkg/kerrors"
-	"strconv"
 )
 
 type ListOrderService struct {
@@ -35,7 +34,6 @@ func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 				},
 			})
 		}
-		zipCode, _ := strconv.ParseInt(v.Consignee.ZipCode, 10, 32)
 		o := &order.Order{
 			OrderItems:   nil,
 			OrderId:      v.OrderId,
@@ -47,7 +45,7 @@ func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 				City:          v.Consignee.City,
 				State:         v.Consignee.State,
 				Country:       v.Consignee.Country,
-				ZipCode:       int32(zipCode),
+				ZipCode:       v.Consignee.ZipCode,
 			},
 			CreatedAt: int32(v.CreatedAt.Unix()),
 		}

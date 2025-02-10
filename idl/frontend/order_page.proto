@@ -8,7 +8,7 @@ import "frontend/common.proto";
 option go_package = "/frontend/order";
 
 service OrderService {
-  rpc OrderList(common.Empty) returns (common.Empty) {
+  rpc OrderList(common.Empty) returns(common.Empty) {
     option (api.get) = "/order";
   }
 }

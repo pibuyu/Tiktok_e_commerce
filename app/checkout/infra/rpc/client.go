@@ -4,6 +4,7 @@ import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/conf"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/clientsuite"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/cart/cartservice"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order/orderservice"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/payment/paymentservice"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/product/productcatalogservice"
 	"github.com/cloudwego/kitex/client"
@@ -14,6 +15,7 @@ var (
 	CartClient    cartservice.Client
 	ProductClient productcatalogservice.Client
 	PaymentClient paymentservice.Client
+	OrderClient   orderservice.Client
 	once          sync.Once
 	err           error
 	serviceName   string
@@ -32,6 +34,7 @@ func InitClient() {
 		initCartClient()
 		initProductClient()
 		initPaymentClient()
+		initOrderClient()
 	})
 }
 
@@ -88,6 +91,13 @@ func initPaymentClient() {
 	//	client.WithMetaHandler(transmeta.ClientHTTP2Handler),
 	//)
 	PaymentClient, err = paymentservice.NewClient("payment", CommonSuite)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func initOrderClient() {
+	OrderClient, err = orderservice.NewClient("order", CommonSuite)
 	if err != nil {
 		panic(err)
 	}

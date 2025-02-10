@@ -1,7 +1,7 @@
 export ROOT_MOD=github.com/Blue-Berrys/Tiktok_e_commerce
 #export CWGO=/Users/mac/go/bin/cwgo
 
-
+#server
 .PHONY:gen-user
 gen-user:
 	@cd rpc_gen && cwgo client --type RPC --service user --module ${ROOT_MOD}/rpc_gen --I ../idl --idl ../idl/user.proto
@@ -72,3 +72,7 @@ gen-frontend-cart:
 .PHONY:gen-frontend-checkout
 gen-frontend-checkout:
 	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/checkout_page.proto
+
+.PHONY:gen-frontend-order
+gen-frontend-order:
+	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/order_page.proto
