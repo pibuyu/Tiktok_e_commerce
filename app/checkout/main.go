@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/biz/dal"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/infra/mq"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/infra/rpc"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/serversuite"
@@ -42,6 +43,9 @@ func main() {
 
 	//init rpc client
 	rpc.InitClient()
+
+	//init mq
+	mq.Init()
 
 	opts := kitexInit()
 

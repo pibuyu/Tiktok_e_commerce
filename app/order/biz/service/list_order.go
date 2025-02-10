@@ -35,11 +35,10 @@ func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 			})
 		}
 		o := &order.Order{
-			OrderItems:   nil,
-			OrderId:      v.OrderId,
-			UserId:       v.UserId,
-			UserCurrency: v.UserCurrency,
-			Email:        v.Consignee.Email,
+			OrderItems: nil,
+			OrderId:    v.OrderId,
+			UserId:     v.UserId,
+			Email:      v.Consignee.Email,
 			Address: &order.Address{
 				StreetAddress: v.Consignee.StreetAddress,
 				City:          v.Consignee.City,

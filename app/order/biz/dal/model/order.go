@@ -40,7 +40,8 @@ func (Order) TableName() string {
 
 func ListOrder(ctx context.Context, db *gorm.DB, userId uint32) ([]*Order, error) {
 	var results []*Order
-	err := db.WithContext(ctx).Model(&Order{}).
+	err := db.WithContext(ctx).Debug().
+		Model(&Order{}).
 		Where("user_id = ?", userId).Find(&results).Error
 	return results, err
 }

@@ -22,11 +22,10 @@ message Address {
 
 message PlaceOrderReq {
     uint32 user_id = 1;
-    string user_currency = 2;
 
     Address address = 3;
     string email = 4;
-    repeated OrderItem order_items = 5;
+    repeated OrderItem items = 5;
 }
 
 message OrderItem {
@@ -42,9 +41,7 @@ message PlaceOrderResp {
     OrderResult order = 1;
 }
 
-message ListOrderReq {
-    uint32 user_id = 1;
-}
+
 
 message Order {
     repeated OrderItem order_items = 1;
@@ -54,6 +51,10 @@ message Order {
     Address address = 5;
     string email = 6;
     int32 created_at = 7;
+}
+
+message ListOrderReq {
+    uint32 user_id = 1;
 }
 
 message ListOrderResp {

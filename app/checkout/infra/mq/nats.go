@@ -1,4 +1,4 @@
-package rpc
+package mq
 
 import "github.com/nats-io/nats.go"
 
@@ -8,5 +8,9 @@ var (
 )
 
 func Init() {
+	Nc, err = nats.Connect(nats.DefaultURL)
+	if err != nil {
+		panic(err)
+	}
 
 }

@@ -40,7 +40,7 @@ gen-order:
 .PHONY:gen-email
 gen-email:
 	@cd rpc_gen && cwgo client --type RPC --service email --module ${ROOT_MOD}/rpc_gen --I ../idl --idl ../idl/email.proto
-	@cd app/order && cwgo server --type RPC --service email --module ${ROOT_MOD}/app/email --I ../../idl --idl ../../idl/email.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
+	@cd app/email && cwgo server --type RPC --service email --module ${ROOT_MOD}/app/email --I ../../idl --idl ../../idl/email.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
 
 
 
@@ -50,7 +50,6 @@ gen-email:
 .PHONY:gen-frontend-auth
 gen-frontend-auth:
 	@cd app/frontend && cwgo server --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend -I ../../idl  --idl ../../idl/frontend/auth_page.proto
-
 
 .PHONY:gen-frontend-home
 gen-frontend-home:

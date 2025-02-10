@@ -12,12 +12,12 @@ services:
 #    image: 'redis:latest'
 #    ports:
 #      - 6379:6379
-#  consul:
-#    image: "hashicorp/consul:latest"
-#    ports:
-#      - "8500:8500"
-#    environment:
-#      CONSUL_BIND_INTERFACE: eth0
+  consul:
+    image: "hashicorp/consul:latest"
+    ports:
+      - "8500:8500"
+    environment:
+      CONSUL_BIND_INTERFACE: eth0
   # Jaeger
   jaeger-all-in-one:
     container_name: jaeger-all-in-one

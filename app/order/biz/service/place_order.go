@@ -22,7 +22,7 @@ func NewPlaceOrderService(ctx context.Context) *PlaceOrderService {
 func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrderResp, err error) {
 	resp = &order.PlaceOrderResp{}
 	// 基础校验
-	if len(req.OrderItems) == 0 {
+	if len(req.Items) == 0 {
 		err = kerrors.NewGRPCBizStatusError(500001, "items is empty")
 		return
 	}
@@ -32,10 +32,9 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrde
 		orderId, _ := uuid.NewRandom()
 
 		o := &model.Order{
-			OrderId:      orderId.String(),
-			OrderState:   model.OrderStatePlaced,
-			UserId:       req.UserId,
-			UserCurrency: req.UserCurrency,
+			OrderId:    orderId.String(),
+			OrderState: model.OrderStatePlaced,
+			UserId:     req.UserId,
 			Consignee: model.Consignee{
 				Email: req.Email,
 			},
@@ -56,7 +55,7 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrde
 
 		//2.创建order与item的映射
 		var items []*model.OrderItem
-		for _, v := range req.OrderItems {
+		for _, v := range req.Items {
 			items = append(items, &model.OrderItem{
 				OrderIdRefer: orderId.String(),
 				ProductId:    v.Item.ProductId,

@@ -85,11 +85,6 @@ func (x *PlaceOrderReq) FastRead(buf []byte, _type int8, number int32) (offset i
 		if err != nil {
 			goto ReadFieldError
 		}
-	case 2:
-		offset, err = x.fastReadField2(buf, _type)
-		if err != nil {
-			goto ReadFieldError
-		}
 	case 3:
 		offset, err = x.fastReadField3(buf, _type)
 		if err != nil {
@@ -123,11 +118,6 @@ func (x *PlaceOrderReq) fastReadField1(buf []byte, _type int8) (offset int, err 
 	return offset, err
 }
 
-func (x *PlaceOrderReq) fastReadField2(buf []byte, _type int8) (offset int, err error) {
-	x.UserCurrency, offset, err = fastpb.ReadString(buf, _type)
-	return offset, err
-}
-
 func (x *PlaceOrderReq) fastReadField3(buf []byte, _type int8) (offset int, err error) {
 	var v Address
 	offset, err = fastpb.ReadMessage(buf, _type, &v)
@@ -149,7 +139,7 @@ func (x *PlaceOrderReq) fastReadField5(buf []byte, _type int8) (offset int, err 
 	if err != nil {
 		return offset, err
 	}
-	x.OrderItems = append(x.OrderItems, &v)
+	x.Items = append(x.Items, &v)
 	return offset, nil
 }
 
@@ -503,7 +493,6 @@ func (x *PlaceOrderReq) FastWrite(buf []byte) (offset int) {
 		return offset
 	}
 	offset += x.fastWriteField1(buf[offset:])
-	offset += x.fastWriteField2(buf[offset:])
 	offset += x.fastWriteField3(buf[offset:])
 	offset += x.fastWriteField4(buf[offset:])
 	offset += x.fastWriteField5(buf[offset:])
@@ -515,14 +504,6 @@ func (x *PlaceOrderReq) fastWriteField1(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteUint32(buf[offset:], 1, x.GetUserId())
-	return offset
-}
-
-func (x *PlaceOrderReq) fastWriteField2(buf []byte) (offset int) {
-	if x.UserCurrency == "" {
-		return offset
-	}
-	offset += fastpb.WriteString(buf[offset:], 2, x.GetUserCurrency())
 	return offset
 }
 
@@ -543,11 +524,11 @@ func (x *PlaceOrderReq) fastWriteField4(buf []byte) (offset int) {
 }
 
 func (x *PlaceOrderReq) fastWriteField5(buf []byte) (offset int) {
-	if x.OrderItems == nil {
+	if x.Items == nil {
 		return offset
 	}
-	for i := range x.GetOrderItems() {
-		offset += fastpb.WriteMessage(buf[offset:], 5, x.GetOrderItems()[i])
+	for i := range x.GetItems() {
+		offset += fastpb.WriteMessage(buf[offset:], 5, x.GetItems()[i])
 	}
 	return offset
 }
@@ -804,7 +785,6 @@ func (x *PlaceOrderReq) Size() (n int) {
 		return n
 	}
 	n += x.sizeField1()
-	n += x.sizeField2()
 	n += x.sizeField3()
 	n += x.sizeField4()
 	n += x.sizeField5()
@@ -816,14 +796,6 @@ func (x *PlaceOrderReq) sizeField1() (n int) {
 		return n
 	}
 	n += fastpb.SizeUint32(1, x.GetUserId())
-	return n
-}
-
-func (x *PlaceOrderReq) sizeField2() (n int) {
-	if x.UserCurrency == "" {
-		return n
-	}
-	n += fastpb.SizeString(2, x.GetUserCurrency())
 	return n
 }
 
@@ -844,11 +816,11 @@ func (x *PlaceOrderReq) sizeField4() (n int) {
 }
 
 func (x *PlaceOrderReq) sizeField5() (n int) {
-	if x.OrderItems == nil {
+	if x.Items == nil {
 		return n
 	}
-	for i := range x.GetOrderItems() {
-		n += fastpb.SizeMessage(5, x.GetOrderItems()[i])
+	for i := range x.GetItems() {
+		n += fastpb.SizeMessage(5, x.GetItems()[i])
 	}
 	return n
 }
@@ -1058,10 +1030,9 @@ var fieldIDToName_Address = map[int32]string{
 
 var fieldIDToName_PlaceOrderReq = map[int32]string{
 	1: "UserId",
-	2: "UserCurrency",
 	3: "Address",
 	4: "Email",
-	5: "OrderItems",
+	5: "Items",
 }
 
 var fieldIDToName_OrderItem = map[int32]string{

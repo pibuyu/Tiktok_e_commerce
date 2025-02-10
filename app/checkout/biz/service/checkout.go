@@ -2,14 +2,18 @@ package service
 
 import (
 	"context"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/infra/mq"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/checkout/infra/rpc"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/cart"
 	checkout "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/checkout"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/email"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/payment"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/nats-io/nats.go"
+	"google.golang.org/protobuf/proto"
 )
 
 type CheckoutService struct {
@@ -80,8 +84,8 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 			Country:       req.Address.Country,
 			ZipCode:       req.Address.ZipCode,
 		},
-		Email:      req.Email,
-		OrderItems: oi,
+		Email: req.Email,
+		Items: oi,
 	})
 	if err != nil {
 		klog.Errorf("创建订单err:%v", err)
@@ -118,6 +122,20 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 		klog.Errorf("结算err:%v", err)
 		return nil, err
 	}
+
+	//3.2订单结算的结果
+	data, _ := proto.Marshal(&email.EmailReq{
+		From:        "3531095171@qq.com",
+		To:          "2098245863@qq.com",
+		ContentType: "text/plain",
+		Subject:     "You have created an order in the Tiktok_e_commerce",
+		Content:     "You have created an order in the Tiktok_e_commerce",
+	})
+	msg := &nats.Msg{
+		Subject: "email",
+		Data:    data,
+	}
+	_ = mq.Nc.PublishMsg(msg)
 
 	klog.Infof("结算订单的结果为:%v", paymentResult)
 
