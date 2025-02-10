@@ -67,3 +67,8 @@ gen-frontend-category:
 .PHONY:gen-frontend-cart
 gen-frontend-cart:
 	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/cart_page.proto
+
+
+.PHONY:gen-frontend-checkout
+gen-frontend-checkout:
+	@cd app/frontend && cwgo server -I ../../idl --type HTTP --service frontend --module ${ROOT_MOD}/app/frontend --idl ../../idl/frontend/checkout_page.proto
