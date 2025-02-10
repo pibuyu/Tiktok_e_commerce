@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/user/biz/dal"
+	"github.com/joho/godotenv"
+	consul "github.com/kitex-contrib/registry-consul"
 	"net"
 	"time"
 
@@ -16,13 +18,14 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-// todo:需要改造与其他模块保持一致，并增加provider相关配置
 func main() {
 	opts := kitexInit()
 
 	svr := userservice.NewServer(new(UserServiceImpl), opts...)
 
 	//init mysql & redis
+	//初始化总是失败记得检查下是否读取了环境变量!!!
+	_ = godotenv.Load()
 	dal.Init()
 
 	err := svr.Run()
@@ -38,6 +41,13 @@ func kitexInit() (opts []server.Option) {
 		panic(err)
 	}
 	opts = append(opts, server.WithServiceAddr(addr))
+
+	//registry info
+	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	if err != nil {
+		klog.Fatal(err)
+	}
+	opts = append(opts, server.WithRegistry(r))
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{

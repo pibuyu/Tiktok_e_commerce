@@ -9,12 +9,12 @@ kitex:
 
 registry:
   registry_address:
-    - 101.126.144.39:8500
+    - 127.0.0.1:8500
   username: ""
   password: ""
 
 mysql:
-  dsn: "easy-video-net:hhf001113@tcp(8.138.149.242:3306)/easy-video-net?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "%s:%s@tcp(%s:3306)/DYMall?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
   address: "8.138.149.242:6379"

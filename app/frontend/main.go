@@ -4,6 +4,12 @@ package main
 
 import (
 	"context"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/infra/rpc"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/middleware"
+	"github.com/hertz-contrib/sessions"
+	"github.com/hertz-contrib/sessions/redis"
+	"github.com/joho/godotenv"
+	"os"
 	"time"
 
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/biz/router"
@@ -24,6 +30,12 @@ import (
 )
 
 func main() {
+	//load env config
+	_ = godotenv.Load()
+
+	//init rpc client
+	rpc.Init()
+
 	// init dal
 	// dal.Init()
 	address := conf.GetConf().Hertz.Address
@@ -43,14 +55,29 @@ func main() {
 	h.Static("/static", "./")
 
 	//router
+	h.GET("/about", func(c context.Context, ctx *app.RequestContext) {
+		ctx.HTML(consts.StatusOK, "about", utils.H{"title": "About"})
+	})
 	h.GET("/sign-in", func(c context.Context, ctx *app.RequestContext) {
-		ctx.HTML(consts.StatusOK, "sign-in.tmpl", utils.H{"ping": "pong"})
+		//返回到登录页面的前一个页面(referer路由)
+		data := utils.H{
+			"Title": "Sign In",
+			"next":  ctx.Query("next"),
+		}
+		ctx.HTML(consts.StatusOK, "sign-in", data)
+	})
+	h.GET("/sign-up", func(c context.Context, ctx *app.RequestContext) {
+		ctx.HTML(consts.StatusOK, "sign-up", utils.H{"ping": "pong"})
 	})
 
 	h.Spin()
 }
 
 func registerMiddleware(h *server.Hertz) {
+	//session
+	store, _ := redis.NewStore(10, "tcp", conf.GetConf().Redis.Address, "hhf001113", []byte(os.Getenv("SESSION_SECRET")))
+	h.Use(sessions.New("cloudwego-shop", store))
+
 	// log
 	logger := hertzlogrus.NewLogger()
 	hlog.SetLogger(logger)
@@ -89,4 +116,7 @@ func registerMiddleware(h *server.Hertz) {
 
 	// cores
 	h.Use(cors.Default())
+
+	//apply middleware
+	middleware.Register(h)
 }

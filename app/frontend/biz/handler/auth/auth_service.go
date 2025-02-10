@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"github.com/cloudwego/kitex/pkg/klog"
 
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/biz/service"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/biz/utils"
@@ -10,6 +11,8 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
+
+//包含了auth_page.proto中的所有方法
 
 // Login .
 // @router /auth/login [POST]
@@ -22,14 +25,16 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewLoginService(ctx, c).Run(&req)
+	//resp := &common.Empty{}
+	redirect, err := service.NewLoginService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
+	klog.Infof("redirect to path:%s", redirect)
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	//先重定向回到home
+	c.Redirect(consts.StatusOK, []byte(redirect))
 }
 
 // Register .
@@ -43,14 +48,15 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewRegisterService(ctx, c).Run(&req)
+	//resp := &common.Empty{}
+	_, err = service.NewRegisterService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	//先重定向回到home
+	c.Redirect(consts.StatusOK, []byte("/"))
 }
 
 // Logout .
@@ -64,12 +70,13 @@ func Logout(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewLogoutService(ctx, c).Run(&req)
+	//resp := &common.Empty{}
+	_, err = service.NewLogoutService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	//先重定向回到home
+	c.Redirect(consts.StatusOK, []byte("/"))
 }
