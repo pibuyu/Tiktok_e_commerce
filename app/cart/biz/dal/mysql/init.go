@@ -1,7 +1,10 @@
 package mysql
 
 import (
+	"fmt"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/cart/biz/dal/model"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/cart/conf"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -15,8 +18,8 @@ var (
 )
 
 func Init() {
-	//dsn := fmt.Sprintf(conf.GetConf().MySQL.DSN, os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_HOST"))
-	dsn := "DYMall:DYMall@tcp(8.138.149.242:3306)/DYMall?charset=utf8mb4&parseTime=True&loc=Local" //先给写死
+	dsn := fmt.Sprintf(conf.GetConf().MySQL.DSN, os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_HOST"))
+	klog.Infof("mysql dsn :%s", dsn)
 	DB, err = gorm.Open(mysql.Open(dsn),
 		&gorm.Config{
 			PrepareStmt:            true,
