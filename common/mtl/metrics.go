@@ -14,7 +14,7 @@ import (
 // common registry
 var Registry *prometheus.Registry
 
-func InitMetric(serviceName, metricsPort, registryAddr string) {
+func InitMetric(serviceName, metricsPort, registryAddr string) (registry.Registry, *registry.Info) {
 
 	Registry = prometheus.NewRegistry()
 	//注册go运行时相关指标
@@ -45,4 +45,6 @@ func InitMetric(serviceName, metricsPort, registryAddr string) {
 	go func() {
 		_ = http.ListenAndServe(metricsPort, nil)
 	}()
+
+	return r, registryInfo
 }

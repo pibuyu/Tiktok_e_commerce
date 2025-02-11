@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/user/biz/dal"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
 	"github.com/joho/godotenv"
 	consul "github.com/kitex-contrib/registry-consul"
 	"net"
@@ -18,8 +20,22 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+)
+
 func main() {
 	opts := kitexInit()
+
+	//init metrics.注意需要放在init dal和rpc之前,后者可能依赖前者
+	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
+	//init tracing
+	p := mtl.InitTracing(ServiceName)
+	defer func() { //退出前上传剩余链路数据
+		_ = p.Shutdown(context.Background())
+	}()
 
 	svr := userservice.NewServer(new(UserServiceImpl), opts...)
 

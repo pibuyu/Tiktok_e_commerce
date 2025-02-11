@@ -6,6 +6,11 @@ import (
 	"context"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/infra/rpc"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/middleware"
+	frontendutils "github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/utils"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
+	hertzprom "github.com/hertz-contrib/monitor-prometheus"
+
+	hertzoteltracing "github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"github.com/hertz-contrib/sessions"
 	"github.com/hertz-contrib/sessions/redis"
 	"github.com/joho/godotenv"
@@ -29,9 +34,29 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = frontendutils.ServiceName
+	MetricsPort  = conf.GetConf().Hertz.MetricsPort
+	RegistryAddr = conf.GetConf().Hertz.RegistryAddr
+)
+
 func main() {
+
 	//load env config
 	_ = godotenv.Load()
+
+	//init metrics
+	consul, registryInfo := mtl.InitMetric(ServiceName, MetricsPort, RegistryAddr)
+	defer func() {
+		//退出时注销prometheus服务
+		_ = consul.Deregister(registryInfo)
+	}()
+
+	//init tracing
+	p := mtl.InitTracing(ServiceName)
+	defer func() { //退出前上传剩余链路数据
+		_ = p.Shutdown(context.Background())
+	}()
 
 	//init rpc client
 	rpc.InitClient()
@@ -39,7 +64,19 @@ func main() {
 	// init dal
 	// dal.Init()
 	address := conf.GetConf().Hertz.Address
-	h := server.New(server.WithHostPorts(address))
+
+	tracer, cfg := hertzoteltracing.NewServerTracer()
+
+	h := server.New(server.WithHostPorts(address),
+		server.WithTracer(hertzprom.NewServerTracer(
+			"",
+			"",
+			hertzprom.WithRegistry(mtl.Registry),
+			hertzprom.WithDisableServer(true),
+		)),
+		tracer,
+	)
+	h.Use(hertzoteltracing.ServerMiddleware(cfg))
 
 	registerMiddleware(h)
 

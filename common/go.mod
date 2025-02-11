@@ -2,6 +2,8 @@ module github.com/Blue-Berrys/Tiktok_e_commerce/common
 
 go 1.23.4
 
+
+
 require (
 	github.com/cloudwego/kitex v0.11.3
 	github.com/kitex-contrib/monitor-prometheus v0.2.0

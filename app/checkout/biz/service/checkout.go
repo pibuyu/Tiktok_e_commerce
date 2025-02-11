@@ -13,6 +13,8 @@ import (
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/nats-io/nats.go"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/propagation"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -134,7 +136,10 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 	msg := &nats.Msg{
 		Subject: "email",
 		Data:    data,
+		Header:  make(nats.Header),
 	}
+	otel.GetTextMapPropagator().Inject(s.ctx, propagation.HeaderCarrier(msg.Header))
+
 	_ = mq.Nc.PublishMsg(msg)
 
 	klog.Infof("结算订单的结果为:%v", paymentResult)
