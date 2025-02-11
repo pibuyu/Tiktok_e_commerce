@@ -42,7 +42,6 @@ message PlaceOrderResp {
 }
 
 
-
 message Order {
     repeated OrderItem order_items = 1;
     string order_id = 2;

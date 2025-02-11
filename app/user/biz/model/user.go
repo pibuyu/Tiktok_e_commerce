@@ -20,3 +20,11 @@ func GetByEmail(db *gorm.DB, email string) (result *User, err error) {
 	err = db.Model(&User{}).Where("email = ?", email).First(&result).Error
 	return
 }
+
+func DeleteUserById(db *gorm.DB, userId int32) error {
+	return db.Model(&User{}).Where("id = ?", userId).Delete(&User{}).Error
+}
+
+func UpdatePassword(db *gorm.DB, email, newPassword string) error {
+	return db.Model(&User{}).Where("email = ?", email).UpdateColumn("password_hashed", newPassword).Error
+}

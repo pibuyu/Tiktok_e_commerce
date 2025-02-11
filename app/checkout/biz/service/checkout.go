@@ -144,6 +144,16 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 
 	klog.Infof("结算订单的结果为:%v", paymentResult)
 
+	//3.3 将订单置为paid状态
+	//userId := frontutils.GetUserIdFromCtx(s.ctx)
+	//_, err = rpc.OrderClient.MarkOrderPaid(s.ctx, &order.MarkOrderPaidReq{
+	//	UserId:  uint32(userId),
+	//	OrderId: orderResp.Order.OrderId,
+	//})
+	//if err != nil {
+	//	return nil, err
+	//}
+
 	resp = &checkout.CheckoutResp{
 		OrderId:       orderId,
 		TransactionId: paymentResult.TransactionId,

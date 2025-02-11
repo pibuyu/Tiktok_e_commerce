@@ -9,6 +9,7 @@ import (
 	frontendutils "github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/utils"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/common/mtl"
 	hertzprom "github.com/hertz-contrib/monitor-prometheus"
+	hertzobslogrus "github.com/hertz-contrib/obs-opentelemetry/logging/logrus"
 
 	hertzoteltracing "github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"github.com/hertz-contrib/sessions"
@@ -93,6 +94,7 @@ func main() {
 
 	//router
 	h.GET("/about", func(c context.Context, ctx *app.RequestContext) {
+		hlog.CtxInfof(c, "CloudWeGo shop about page")
 		ctx.HTML(consts.StatusOK, "about", utils.H{"title": "About"})
 	})
 	h.GET("/sign-in", func(c context.Context, ctx *app.RequestContext) {
@@ -116,9 +118,18 @@ func registerMiddleware(h *server.Hertz) {
 	h.Use(sessions.New("cloudwego-shop", store))
 
 	// log
-	logger := hertzlogrus.NewLogger()
+	//用带链路追踪的logger包装原本的logger
+	logger := hertzobslogrus.NewLogger(hertzobslogrus.WithLogger(hertzlogrus.NewLogger().Logger()))
+	//logger := hertzlogrus.NewLogger()
 	hlog.SetLogger(logger)
 	hlog.SetLevel(conf.LogLevel())
+	//生产环境每分钟刷盘,测试环境每秒钟刷盘
+	var flushInterval time.Duration
+	if os.Getenv("GO_ENV") == "online" {
+		flushInterval = time.Minute
+	} else {
+		flushInterval = time.Second
+	}
 	asyncWriter := &zapcore.BufferedWriteSyncer{
 		WS: zapcore.AddSync(&lumberjack.Logger{
 			Filename:   conf.GetConf().Hertz.LogFileName,
@@ -126,7 +137,7 @@ func registerMiddleware(h *server.Hertz) {
 			MaxBackups: conf.GetConf().Hertz.LogMaxBackups,
 			MaxAge:     conf.GetConf().Hertz.LogMaxAge,
 		}),
-		FlushInterval: time.Minute,
+		FlushInterval: flushInterval,
 	}
 	hlog.SetOutput(asyncWriter)
 	h.OnShutdown = append(h.OnShutdown, func(ctx context.Context) {

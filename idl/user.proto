@@ -3,6 +3,7 @@ syntax = "proto3";
 package user;
 
 option go_package = "/user";
+import "common.proto";
 
 
 message RegisterReq {
@@ -24,7 +25,22 @@ message LoginResp {
     int32 user_id = 1;
 }
 
+message DeleteUserReq{
+    int32 user_id = 1;
+}
+
+//user struct只有email和password两个字段,只允许修改密码
+message UpdateUserInfoReq{
+    string email = 1;
+    string oldPassword=2;
+    string newPassword = 3;
+}
+
+
+
 service UserService {
     rpc Register (RegisterReq) returns (RegisterResp) {}
     rpc Login (LoginReq) returns (LoginResp) {}
+    rpc DeleteUser(DeleteUserReq) returns (common.Empty){}
+    rpc UpdateUserInfo(UpdateUserInfoReq) returns (common.Empty){}
 }

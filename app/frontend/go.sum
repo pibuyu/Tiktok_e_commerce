@@ -200,6 +200,8 @@ github.com/hertz-contrib/logger/logrus v1.0.1 h1:1iFu/L92QlFSDXUn77WJL32dk/5HBzA
 github.com/hertz-contrib/logger/logrus v1.0.1/go.mod h1:SqDYLwVq5hTItYqimgZQbFCYPOIGNvBTq0Ip2OQwMcY=
 github.com/hertz-contrib/monitor-prometheus v0.1.3 h1:gQswZA8AnXHFuULDCRz1A1PDjtKyTh/RatWzCca9b5I=
 github.com/hertz-contrib/monitor-prometheus v0.1.3/go.mod h1:5ZnWsWWdBFJrSRacLfIyudR8+dIvwpBwuYux8ecO3cw=
+github.com/hertz-contrib/obs-opentelemetry/logging/logrus v0.1.1 h1:4KR/JoIc8PSbVucOzsLSJOtVgDowwNG6/C/GkrpPXHI=
+github.com/hertz-contrib/obs-opentelemetry/logging/logrus v0.1.1/go.mod h1:dLQsSFKUVF4pya7kLlF6l1T69+mOPObotXGJO8ptbho=
 github.com/hertz-contrib/obs-opentelemetry/tracing v0.4.1 h1:YOv/UcSHjeAg1CwvcXi1zsNz5xFKf1iAKlEKAt7k31I=
 github.com/hertz-contrib/obs-opentelemetry/tracing v0.4.1/go.mod h1:u+EVWM4dDcudoXY4bCia0EyhaBOsPgRah+FvM75DM7s=
 github.com/hertz-contrib/pprof v0.1.2 h1:eC4jpg8ToSi+9YEOPIr3jki8e/ix3aFPtphCgJ36T6Q=
