@@ -6,12 +6,12 @@ option go_package = "/product";
 import "common.proto";
 
 service ProductCatalogService {
+    rpc CreateProduct(CreateProductReq) returns (CreateProductResp){}
+    rpc UpdateProductInfo(UpdateProductInfoReq) returns (common.Empty){}
+    rpc DeleteProduct(DeleteProductReq) returns (common.Empty){}
     rpc ListProducts(ListProductsReq) returns (ListProductsResp) {}
     rpc GetProduct(GetProductReq) returns (GetProductResp) {}
     rpc SearchProducts(SearchProductsReq) returns (SearchProductsResp) {}
-    rpc CreateProduct(CreateProductReq) returns (CreateProductResp){}
-    rpc DeleteProduct(DeleteProductReq) returns (common.Empty){}
-    rpc UpdateProductInfo(UpdateProductInfoReq) returns (common.Empty){}
 }
 
 message ListProductsReq{

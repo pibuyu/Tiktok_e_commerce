@@ -4,6 +4,7 @@ package orderservice
 
 import (
 	"context"
+	common "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
@@ -14,6 +15,7 @@ type Client interface {
 	PlaceOrder(ctx context.Context, Req *order.PlaceOrderReq, callOptions ...callopt.Option) (r *order.PlaceOrderResp, err error)
 	ListOrder(ctx context.Context, Req *order.ListOrderReq, callOptions ...callopt.Option) (r *order.ListOrderResp, err error)
 	MarkOrderPaid(ctx context.Context, Req *order.MarkOrderPaidReq, callOptions ...callopt.Option) (r *order.MarkOrderPaidResp, err error)
+	UpdateOrderInfo(ctx context.Context, Req *order.UpdateOrderInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -58,4 +60,9 @@ func (p *kOrderServiceClient) ListOrder(ctx context.Context, Req *order.ListOrde
 func (p *kOrderServiceClient) MarkOrderPaid(ctx context.Context, Req *order.MarkOrderPaidReq, callOptions ...callopt.Option) (r *order.MarkOrderPaidResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MarkOrderPaid(ctx, Req)
+}
+
+func (p *kOrderServiceClient) UpdateOrderInfo(ctx context.Context, Req *order.UpdateOrderInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateOrderInfo(ctx, Req)
 }

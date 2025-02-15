@@ -4,7 +4,6 @@ go 1.23.4
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
-
 require (
 	github.com/cloudwego/fastpb v0.0.5
 	github.com/cloudwego/kitex v0.12.1
@@ -22,6 +21,7 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen v0.0.0-20250209064505-a520042b8882 // indirect
 	github.com/bufbuild/protocompile v0.14.1 // indirect
 	github.com/bytedance/gopkg v0.1.1 // indirect
 	github.com/bytedance/sonic v1.12.8 // indirect

@@ -43,7 +43,10 @@ gen-email:
 	@cd app/email && cwgo server --type RPC --service email --module ${ROOT_MOD}/app/email --I ../../idl --idl ../../idl/email.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
 
 
-
+.PHONY:gen-ai
+gen-ai:
+	@cd rpc_gen && cwgo client --type RPC --service ai --module ${ROOT_MOD}/rpc_gen --I ../idl --idl ../idl/ai.proto
+	@cd app/ai && cwgo server --type RPC --service ai --module ${ROOT_MOD}/app/ai --I ../../idl --idl ../../idl/ai.proto --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen"
 
 
 #需要额外注意:生成frontend代码时type=HTTP

@@ -2,6 +2,7 @@ package order
 
 import (
 	"context"
+	common "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
 
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order/orderservice"
@@ -15,6 +16,7 @@ type RPCClient interface {
 	PlaceOrder(ctx context.Context, Req *order.PlaceOrderReq, callOptions ...callopt.Option) (r *order.PlaceOrderResp, err error)
 	ListOrder(ctx context.Context, Req *order.ListOrderReq, callOptions ...callopt.Option) (r *order.ListOrderResp, err error)
 	MarkOrderPaid(ctx context.Context, Req *order.MarkOrderPaidReq, callOptions ...callopt.Option) (r *order.MarkOrderPaidResp, err error)
+	UpdateOrderInfo(ctx context.Context, Req *order.UpdateOrderInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
 func NewRPCClient(dstService string, opts ...client.Option) (RPCClient, error) {
@@ -53,4 +55,8 @@ func (c *clientImpl) ListOrder(ctx context.Context, Req *order.ListOrderReq, cal
 
 func (c *clientImpl) MarkOrderPaid(ctx context.Context, Req *order.MarkOrderPaidReq, callOptions ...callopt.Option) (r *order.MarkOrderPaidResp, err error) {
 	return c.kitexClient.MarkOrderPaid(ctx, Req, callOptions...)
+}
+
+func (c *clientImpl) UpdateOrderInfo(ctx context.Context, Req *order.UpdateOrderInfoReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	return c.kitexClient.UpdateOrderInfo(ctx, Req, callOptions...)
 }

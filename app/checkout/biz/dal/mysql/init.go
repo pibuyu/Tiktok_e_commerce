@@ -16,6 +16,8 @@ var (
 
 func Init() {
 	dsn := fmt.Sprintf(conf.GetConf().MySQL.DSN, os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_HOST"))
+	fmt.Println(os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_HOST"))
+
 	klog.Infof("mysql dsn :%s", dsn)
 	DB, err = gorm.Open(mysql.Open(dsn),
 		&gorm.Config{

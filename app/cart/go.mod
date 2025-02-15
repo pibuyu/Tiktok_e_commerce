@@ -8,6 +8,8 @@ replace github.com/Blue-Berrys/Tiktok_e_commerce/common => ../../common
 
 //replace github.com/Blue-Berrys/Tiktok_e_commerce/app/cart =>
 
+
+
 require (
 	github.com/Blue-Berrys/Tiktok_e_commerce/common v0.0.0-00010101000000-000000000000
 	github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen v0.0.0-20250118072617-4ec84d4b304e

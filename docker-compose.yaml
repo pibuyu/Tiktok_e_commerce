@@ -18,6 +18,7 @@ services:
       - "8500:8500"
     environment:
       CONSUL_BIND_INTERFACE: eth0
+
   # Jaeger
   jaeger-all-in-one:
     container_name: jaeger-all-in-one

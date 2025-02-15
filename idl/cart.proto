@@ -6,8 +6,8 @@ option go_package = '/cart';
 
 service CartService {
     rpc AddItem(AddItemReq) returns (AddItemResp) {}
-    rpc GetCart(GetCartReq) returns (GetCartResp) {}
     rpc EmptyCart(EmptyCartReq) returns (EmptyCartResp) {}
+    rpc GetCart(GetCartReq) returns (GetCartResp) {}
 }
 
 message CartItem {

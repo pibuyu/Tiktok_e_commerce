@@ -1,0 +1,13 @@
+curl -X PUT http://localhost:8500/v1/agent/check/deregister/service:cart:169.254.129.80:8882
+curl -X PUT http://localhost:8500/v1/agent/check/deregister/service:prometheus:169.254.129.80:9993\
+
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"ai\", \"Name\": \"ai\", \"Address\": \"172.30.192.1\", \"Port\": 8888, \"Check\": { \"TCP\": \"172.30.192.1:8888\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"cart\", \"Name\": \"cart\", \"Address\": \"172.30.192.1\", \"Port\": 8882, \"Check\": { \"TCP\": \"172.30.192.1:8882\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"product\", \"Name\": \"product\", \"Address\": \"172.30.192.1\", \"Port\": 8883, \"Check\": { \"TCP\": \"172.30.192.1:8883\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"checkout\", \"Name\": \"checkout\", \"Address\": \"172.30.192.1\", \"Port\": 8885, \"Check\": { \"TCP\": \"172.30.192.1:8885\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"order\", \"Name\": \"order\", \"Address\": \"172.30.192.1\", \"Port\": 8886, \"Check\": { \"TCP\": \"172.30.192.1:8886\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"payment\", \"Name\": \"payment\", \"Address\": \"172.30.192.1\", \"Port\": 8884, \"Check\": { \"TCP\": \"172.30.192.1:8884\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"user\", \"Name\": \"user\", \"Address\": \"172.30.192.1\", \"Port\": 8880, \"Check\": { \"TCP\": \"172.30.192.1:8880\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+curl -X PUT -H "Content-Type: application/json" --data "{ \"ID\": \"email\", \"Name\": \"email\", \"Address\": \"172.30.192.1\", \"Port\": 8888, \"Check\": { \"TCP\": \"172.30.192.1:8888\", \"Interval\": \"5s\", \"Timeout\": \"5s\" }}" http://localhost:8500/v1/agent/service/register
+
+cwgo server -I ../../idl --type RPC --module github.com/cloudwego/biz-demo/gomall/demo/demo_proto--service demo_proto --idl ../../idl/ai.proto

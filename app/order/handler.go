@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/service"
 )
 
@@ -26,6 +27,13 @@ func (s *OrderServiceImpl) ListOrder(ctx context.Context, req *order.ListOrderRe
 // MarkOrderPaid implements the OrderServiceImpl interface.
 func (s *OrderServiceImpl) MarkOrderPaid(ctx context.Context, req *order.MarkOrderPaidReq) (resp *order.MarkOrderPaidResp, err error) {
 	resp, err = service.NewMarkOrderPaidService(ctx).Run(req)
+
+	return resp, err
+}
+
+// UpdateOrderInfo implements the OrderServiceImpl interface.
+func (s *OrderServiceImpl) UpdateOrderInfo(ctx context.Context, req *order.UpdateOrderInfoReq) (resp *common.Empty, err error) {
+	resp, err = service.NewUpdateOrderInfoService(ctx).Run(req)
 
 	return resp, err
 }

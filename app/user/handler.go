@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/user/biz/service"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
-	
+	user "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/user"
 )
 
 // UserServiceImpl implements the last service interface defined in the IDL.

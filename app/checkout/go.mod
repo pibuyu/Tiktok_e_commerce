@@ -9,7 +9,6 @@ replace github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen => ../../rpc_gen
 replace github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend => ../frontend
 
 require (
-	github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend v0.0.0-00010101000000-000000000000
 	github.com/Blue-Berrys/Tiktok_e_commerce/common v0.0.0-00010101000000-000000000000
 	github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen v0.0.0-20250118072617-4ec84d4b304e
 	github.com/cloudwego/kitex v0.12.1
@@ -42,7 +41,6 @@ require (
 	github.com/cloudwego/fastpb v0.0.5 // indirect
 	github.com/cloudwego/frugal v0.2.3 // indirect
 	github.com/cloudwego/gopkg v0.1.3 // indirect
-	github.com/cloudwego/hertz v0.9.5 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/cloudwego/localsession v0.1.1 // indirect
 	github.com/cloudwego/netpoll v0.6.5 // indirect
