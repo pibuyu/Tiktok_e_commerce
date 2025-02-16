@@ -156,6 +156,21 @@ func (x *OrderItem) FastRead(buf []byte, _type int8, number int32) (offset int, 
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -181,6 +196,21 @@ func (x *OrderItem) fastReadField1(buf []byte, _type int8) (offset int, err erro
 
 func (x *OrderItem) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 	x.Cost, offset, err = fastpb.ReadFloat(buf, _type)
+	return offset, err
+}
+
+func (x *OrderItem) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.ProductName, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *OrderItem) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.Qty, offset, err = fastpb.ReadInt32(buf, _type)
+	return offset, err
+}
+
+func (x *OrderItem) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.Picture, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -580,6 +610,9 @@ func (x *OrderItem) FastWrite(buf []byte) (offset int) {
 	}
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
 	return offset
 }
 
@@ -596,6 +629,30 @@ func (x *OrderItem) fastWriteField2(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteFloat(buf[offset:], 2, x.GetCost())
+	return offset
+}
+
+func (x *OrderItem) fastWriteField3(buf []byte) (offset int) {
+	if x.ProductName == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetProductName())
+	return offset
+}
+
+func (x *OrderItem) fastWriteField4(buf []byte) (offset int) {
+	if x.Qty == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt32(buf[offset:], 4, x.GetQty())
+	return offset
+}
+
+func (x *OrderItem) fastWriteField5(buf []byte) (offset int) {
+	if x.Picture == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 5, x.GetPicture())
 	return offset
 }
 
@@ -897,6 +954,9 @@ func (x *OrderItem) Size() (n int) {
 	}
 	n += x.sizeField1()
 	n += x.sizeField2()
+	n += x.sizeField3()
+	n += x.sizeField4()
+	n += x.sizeField5()
 	return n
 }
 
@@ -913,6 +973,30 @@ func (x *OrderItem) sizeField2() (n int) {
 		return n
 	}
 	n += fastpb.SizeFloat(2, x.GetCost())
+	return n
+}
+
+func (x *OrderItem) sizeField3() (n int) {
+	if x.ProductName == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.GetProductName())
+	return n
+}
+
+func (x *OrderItem) sizeField4() (n int) {
+	if x.Qty == 0 {
+		return n
+	}
+	n += fastpb.SizeInt32(4, x.GetQty())
+	return n
+}
+
+func (x *OrderItem) sizeField5() (n int) {
+	if x.Picture == "" {
+		return n
+	}
+	n += fastpb.SizeString(5, x.GetPicture())
 	return n
 }
 
@@ -1129,6 +1213,9 @@ var fieldIDToName_PlaceOrderReq = map[int32]string{
 var fieldIDToName_OrderItem = map[int32]string{
 	1: "Item",
 	2: "Cost",
+	3: "ProductName",
+	4: "Qty",
+	5: "Picture",
 }
 
 var fieldIDToName_OrderResult = map[int32]string{
