@@ -7,6 +7,7 @@ option go_package = "/ai";
 // 订单查询请求
 message OrderQueryRequest {
   string message = 1;
+  int32 user_id = 2;
 }
 
 // 订单查询响应
@@ -17,6 +18,7 @@ message OrderQueryResponse {
 // 模拟自动下单请求
 message AutoOrderRequest {
   string message = 1;
+  int32 user_id = 2;
 }
 
 // 模拟自动下单响应

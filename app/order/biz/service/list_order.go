@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/dal/model"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/dal/mysql"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/cart"
@@ -23,19 +24,27 @@ func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 		return nil, kerrors.NewGRPCBizStatusError(500001, err.Error())
 	}
 	var orders []*order.Order
+
 	for _, v := range list {
 		var items []*order.OrderItem
+		v.OrderItems, _ = model.GetOrderItem(s.ctx, mysql.DB, v.OrderId)
+
+		fmt.Println(v.OrderItems)
 		for _, oi := range v.OrderItems {
+			product, _ := model.ProductMapper.GetById(int(oi.ProductId))
 			items = append(items, &order.OrderItem{
 				Cost: oi.Cost,
 				Item: &cart.CartItem{
 					ProductId: oi.ProductId,
 					Quantity:  oi.Quantity,
 				},
+				ProductName: product.Name,
+				Qty:         oi.Quantity,
+				Picture:     product.Picture,
 			})
 		}
 		o := &order.Order{
-			OrderItems: nil,
+			OrderItems: items,
 			OrderId:    v.OrderId,
 			UserId:     v.UserId,
 			Email:      v.Consignee.Email,

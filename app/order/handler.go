@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
-	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/order/biz/service"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
+	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
 )
 
 // OrderServiceImpl implements the last service interface defined in the IDL.

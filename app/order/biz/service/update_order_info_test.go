@@ -2,9 +2,8 @@ package service
 
 import (
 	"context"
-	"testing"
-	common "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/common"
 	order "github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/order"
+	"testing"
 )
 
 func TestUpdateOrderInfo_Run(t *testing.T) {

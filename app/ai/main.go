@@ -37,9 +37,6 @@ func main() {
 	_ = godotenv.Load()
 	dal.Init()
 
-	////init rpc client
-	//rpc.InitClient()
-
 	opts := kitexInit()
 
 	svr := orderservice.NewServer(new(OrderServiceImpl), opts...)

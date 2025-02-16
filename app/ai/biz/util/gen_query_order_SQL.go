@@ -1,7 +1,6 @@
 package util
 
 import (
-	"context"
 	"fmt"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/util/chat_ai"
 	"strings"
@@ -64,17 +63,13 @@ create table product
 `
 )
 
-func GetQueryOrderSQL(question string) (sqlText string) {
-	ctx := context.Background()
-
+func GenQueryOrderSQL(question string) (sqlText string) {
 	text := QueryOrderPrompt
 	text = strings.ReplaceAll(text, "[]", "`")
 	text = strings.ReplaceAll(text, "{要求}", question)
 	fmt.Println("role:\n", text)
 
-	messages := chat_ai.CreateMessagesFromTemplate(text)
-
-	result := chat_ai.Generate(ctx, chat_ai.CM, messages)
+	result := chat_ai.Generate(text)
 	sqlText = result.Content
 
 	fmt.Println("订单查询sql语句：\n", sqlText)

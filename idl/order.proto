@@ -33,6 +33,9 @@ message PlaceOrderReq {
 message OrderItem {
     cart.CartItem item = 1;
     float cost = 2;
+    string productName = 3;
+    int32 qty = 4;
+    string picture = 5;
 }
 
 message OrderResult {

@@ -2,6 +2,7 @@ package order
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/biz/service"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/frontend/biz/utils"
@@ -26,6 +27,8 @@ func OrderList(ctx context.Context, c *app.RequestContext) {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
+
+	fmt.Println("返回的数据为：\n", resp)
 
 	c.HTML(consts.StatusOK, "order", utils.WarpResponse(ctx, c, resp))
 }

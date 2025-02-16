@@ -29,7 +29,7 @@ func TestPlaceOrder_Run(t *testing.T) {
 		City:          "广州市",
 		State:         "广东省",
 		Country:       "中国",
-		ZipCode:       510006,
+		ZipCode:       "510006",
 	}
 	var itemList []*order.OrderItem
 	item := &order.OrderItem{
@@ -41,11 +41,11 @@ func TestPlaceOrder_Run(t *testing.T) {
 	}
 	itemList = append(itemList, item)
 	req := &order.PlaceOrderReq{
-		UserId:       1,
-		UserCurrency: "100",
-		Address:      addr,
-		Email:        "3531095171@qq.com",
-		OrderItems:   itemList,
+		UserId: 1,
+		//UserCurrency: "100",
+		Address: addr,
+		Email:   "3531095171@qq.com",
+		//OrderItem:    itemList,
 	}
 	resp, err := s.Run(req)
 	t.Logf("err: %v", err)
