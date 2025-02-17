@@ -1,9 +1,14 @@
 package model
 
-import "gorm.io/gorm"
+import "C"
+import (
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/dal/mysql"
+	"gorm.io/gorm"
+)
 
 type User struct {
 	gorm.Model
+	Id             int32
 	Email          string `gorm:"uniqueIndex;type:varchar(255) not null"`
 	PasswordHashed string `gorm:"type:varchar(255) not null"`
 }
@@ -18,6 +23,11 @@ func CreateUser(db *gorm.DB, user *User) error {
 
 func GetByEmail(db *gorm.DB, email string) (result *User, err error) {
 	err = db.Model(&User{}).Where("email = ?", email).First(&result).Error
+	return
+}
+
+func GetById(id int32) (result *User, err error) {
+	err = mysql.DB.Model(&User{}).Where("id = ?", id).First(&result).Error
 	return
 }
 

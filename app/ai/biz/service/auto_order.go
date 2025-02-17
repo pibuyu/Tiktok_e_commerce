@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/dal/model"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/dal/mysql"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/util"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/rpc_gen/kitex_gen/ai"
@@ -27,8 +28,16 @@ func (s *AutoOrderService) Run(req *ai.AutoOrderRequest) (resp *ai.AutoOrderResp
 	//
 	//	text = strings.ReplaceAll(text, "[]", "`")
 
-	sqlStrings := util.GenAutoOrderSQL(req.Message)
-	if err = executeMultipleSQL(sqlStrings); err != nil {
+	user, _ := model.GetById(req.UserId)
+	sqlStrings, state := util.GenAutoOrderSQL(req.Message, user)
+
+	if state == 1 {
+		return &ai.AutoOrderResponse{
+			Data: " 请提供收货地址，包括street_address、city、state、country、zip_code等信息，目前缺少收货地址相关信息，无法完成自动下单",
+		}, nil
+	}
+
+	if err = executeMultipleSQL(sqlStrings); err != nil || state == 0 {
 		resp = &ai.AutoOrderResponse{
 			Data: "自动下单失败，请稍后重试",
 		}

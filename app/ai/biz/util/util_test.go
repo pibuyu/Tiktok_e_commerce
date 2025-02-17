@@ -2,19 +2,21 @@ package util
 
 import (
 	"fmt"
+	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/dal/model"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/util/chat_ai"
+	"strconv"
 	"strings"
 	"testing"
 )
 
 func TestChatAI(t *testing.T) {
 	chat_ai.Init()
-	GenQueryOrderSQL("查询 2024 年 1 月 1 日之后创建的订单的订单 ID 和对应的产品名称，以及价格")
+	GenQueryOrderSQL("查询 2024 年 1 月 1 日之后创建的订单的订单 ID 和对应的产品名称，以及价格", 1)
 }
 
 func TestGenAutoOrderSQL(t *testing.T) {
 	chat_ai.Init()
-	sqlStrings := GenAutoOrderSQL("我现在需要购买vivo x200 手机和Notebook，请为我自动下单")
+	sqlStrings, _ := GenAutoOrderSQL("我现在需要购买vivo x200 手机和Notebook，请为我自动下单, 邮政编码为'200000'，收货地址为中国上海市上海和平路123号", &model.User{Id: 1, Email: "3531095171@qq.com"})
 
 	t.Logf("-------------------------------------------------")
 	for _, sqlString := range sqlStrings {
@@ -48,11 +50,18 @@ func TestA(t *testing.T) {
 	text = strings.ReplaceAll(text, "[]", "```")
 
 	fmt.Println(text)
+	//
+	//statements := SplitSQLStatements(text)
+	//
+	//for i, stmt := range statements {
+	//	fmt.Printf("Statement %d:\n%s\n\n", i+1, stmt)
+	//}
+	//fmt.Println("已完成")
+}
 
-	statements := SplitSQLStatements(text)
-
-	for i, stmt := range statements {
-		fmt.Printf("Statement %d:\n%s\n\n", i+1, stmt)
-	}
-	fmt.Println("已完成")
+func TestB(t *testing.T) {
+	var x int32
+	x = 1
+	fmt.Println(x)
+	fmt.Println(strconv.FormatInt(int64(x), 10))
 }

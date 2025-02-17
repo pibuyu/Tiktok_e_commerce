@@ -19,6 +19,11 @@ func (x *OrderQueryRequest) FastRead(buf []byte, _type int8, number int32) (offs
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -34,6 +39,11 @@ ReadFieldError:
 
 func (x *OrderQueryRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
 	x.Message, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *OrderQueryRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.UserId, offset, err = fastpb.ReadInt32(buf, _type)
 	return offset, err
 }
 
@@ -69,6 +79,11 @@ func (x *AutoOrderRequest) FastRead(buf []byte, _type int8, number int32) (offse
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -84,6 +99,11 @@ ReadFieldError:
 
 func (x *AutoOrderRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
 	x.Message, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *AutoOrderRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.UserId, offset, err = fastpb.ReadInt32(buf, _type)
 	return offset, err
 }
 
@@ -117,6 +137,7 @@ func (x *OrderQueryRequest) FastWrite(buf []byte) (offset int) {
 		return offset
 	}
 	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
 	return offset
 }
 
@@ -125,6 +146,14 @@ func (x *OrderQueryRequest) fastWriteField1(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 1, x.GetMessage())
+	return offset
+}
+
+func (x *OrderQueryRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.UserId == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt32(buf[offset:], 2, x.GetUserId())
 	return offset
 }
 
@@ -149,6 +178,7 @@ func (x *AutoOrderRequest) FastWrite(buf []byte) (offset int) {
 		return offset
 	}
 	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
 	return offset
 }
 
@@ -157,6 +187,14 @@ func (x *AutoOrderRequest) fastWriteField1(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 1, x.GetMessage())
+	return offset
+}
+
+func (x *AutoOrderRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.UserId == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt32(buf[offset:], 2, x.GetUserId())
 	return offset
 }
 
@@ -181,6 +219,7 @@ func (x *OrderQueryRequest) Size() (n int) {
 		return n
 	}
 	n += x.sizeField1()
+	n += x.sizeField2()
 	return n
 }
 
@@ -189,6 +228,14 @@ func (x *OrderQueryRequest) sizeField1() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(1, x.GetMessage())
+	return n
+}
+
+func (x *OrderQueryRequest) sizeField2() (n int) {
+	if x.UserId == 0 {
+		return n
+	}
+	n += fastpb.SizeInt32(2, x.GetUserId())
 	return n
 }
 
@@ -213,6 +260,7 @@ func (x *AutoOrderRequest) Size() (n int) {
 		return n
 	}
 	n += x.sizeField1()
+	n += x.sizeField2()
 	return n
 }
 
@@ -221,6 +269,14 @@ func (x *AutoOrderRequest) sizeField1() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(1, x.GetMessage())
+	return n
+}
+
+func (x *AutoOrderRequest) sizeField2() (n int) {
+	if x.UserId == 0 {
+		return n
+	}
+	n += fastpb.SizeInt32(2, x.GetUserId())
 	return n
 }
 
@@ -242,6 +298,7 @@ func (x *AutoOrderResponse) sizeField1() (n int) {
 
 var fieldIDToName_OrderQueryRequest = map[int32]string{
 	1: "Message",
+	2: "UserId",
 }
 
 var fieldIDToName_OrderQueryResponse = map[int32]string{
@@ -250,6 +307,7 @@ var fieldIDToName_OrderQueryResponse = map[int32]string{
 
 var fieldIDToName_AutoOrderRequest = map[int32]string{
 	1: "Message",
+	2: "UserId",
 }
 
 var fieldIDToName_AutoOrderResponse = map[int32]string{

@@ -23,7 +23,7 @@ func (s *QueryOrderService) Run(req *ai.OrderQueryRequest) (resp *ai.OrderQueryR
 	// Finish your business logic.
 	fmt.Println("请求的内容为：", req)
 
-	queryOrderSQL := util.GenQueryOrderSQL(req.Message)
+	queryOrderSQL := util.GenQueryOrderSQL(req.Message, req.UserId)
 
 	rows, err := mysql.DB.Raw(queryOrderSQL).Rows()
 	defer rows.Close()

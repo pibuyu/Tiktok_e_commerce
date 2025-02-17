@@ -15,7 +15,7 @@ import (
 func TestQueryOrder_Run(t *testing.T) {
 
 	ctx := context.Background()
-	s := NewAutoOrderService(ctx)
+	s := NewQueryOrderService(ctx)
 
 	//chdir to adjust config file path
 	if err := os.Chdir("../.."); err != nil {
@@ -27,7 +27,10 @@ func TestQueryOrder_Run(t *testing.T) {
 	dal.Init()
 	chat_ai.Init()
 
-	req := &ai.AutoOrderRequest{Message: "查询 2024 年 1 月 1 日之后创建的订单的订单 ID 和对应的产品名称，以及价格"}
+	req := &ai.OrderQueryRequest{
+		UserId:  1,
+		Message: "查询 2024 年 1 月 1 日之后创建的订单的订单 ID 和对应的产品名称，以及价格",
+	}
 	resp, err := s.Run(req)
 	t.Logf("err: %v", err)
 	t.Logf("resp: %v", resp)

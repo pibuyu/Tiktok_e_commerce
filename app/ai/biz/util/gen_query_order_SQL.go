@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"github.com/Blue-Berrys/Tiktok_e_commerce/app/ai/biz/util/chat_ai"
+	"strconv"
 	"strings"
 )
 
@@ -59,14 +60,16 @@ create table product
 )
     engine = InnoDB;
 查询订单要求：{要求}
+其他要求：给定user_id = {user_id}
 你现在是一名生成sql语句的ai大模型，以上信息为order（订单表），order_item（订单中包含的产品表），product（产品表），请严格上述的表数据，以及查询订单要求，进行生成对应的sql语句。并且只需给出一条sql语句即可，不用给出多余的内容。
 `
 )
 
-func GenQueryOrderSQL(question string) (sqlText string) {
+func GenQueryOrderSQL(question string, userId int32) (sqlText string) {
 	text := QueryOrderPrompt
 	text = strings.ReplaceAll(text, "[]", "`")
 	text = strings.ReplaceAll(text, "{要求}", question)
+	text = strings.ReplaceAll(text, "{user_id}", strconv.FormatInt(int64(userId), 10))
 	fmt.Println("role:\n", text)
 
 	result := chat_ai.Generate(text)
